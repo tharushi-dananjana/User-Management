@@ -1,0 +1,94 @@
+/* Admin.css */
+
+/* Page background */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+/* Page heading */
+.Uh2 {
+  text-align: center;
+  font-size: 26px;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* Form container */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 600px;
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Form */
+.Ufom {
+  width: 100%;
+}
+
+/* Form groups */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #555;
+}
+
+/* Input fields */
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+/* Button wrapper */
+.btnn {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Submit button */
+.btnsub {
+  background: #007bff;
+  color: white;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btnsub:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+.btnsub:active {
+  background: #004494;
+  transform: translateY(1px);
+}

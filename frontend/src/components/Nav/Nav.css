@@ -1,0 +1,46 @@
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  background: #2c3e50;
+  color: white;
+  padding: 20px;
+  position: fixed;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+}
+
+.nav-links li {
+  margin: 20px 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #f39c12;
+}
+
+.icon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.logout {
+  margin-top: 50px;
+}

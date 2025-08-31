@@ -1,0 +1,85 @@
+/* General table styles */
+#users {
+  width: 40%; /* smaller table width */
+  margin: 40px auto 30px auto;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+#users th, #users td {
+  padding: 4px 6px; /* smaller padding */
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+#users th {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  font-size: 11px; /* smaller font */
+}
+
+#users td {
+  font-size: 11px; /* smaller font */
+}
+
+#users tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#users tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Buttons inside table */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.updatebtn, .deletebtn {
+  padding: 3px 6px; /* smaller button padding */
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 10px; /* smaller font */
+}
+
+.updatebtn {
+  background-color: #28a745;
+}
+
+.updatebtn:hover {
+  background-color: #218838;
+}
+
+.deletebtn {
+  background-color: #dc3545;
+}
+
+.deletebtn:hover {
+  background-color: #c82333;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  #users {
+    width: 80%;
+  }
+
+  #users th, #users td {
+    padding: 3px 4px;
+    font-size: 10px;
+  }
+
+  .updatebtn, .deletebtn {
+    padding: 2px 4px;
+    font-size: 9px;
+  }
+}
