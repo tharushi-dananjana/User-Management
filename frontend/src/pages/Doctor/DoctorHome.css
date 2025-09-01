@@ -45,7 +45,9 @@ body {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   border-radius: 6px;
   overflow: hidden;
-  padding: 50px;              /* 👈 remove padding-left/right */
+  padding: 50px; 
+  margin-top: 15px;
+  margin-right: 95px;             /* 👈 remove padding-left/right */
 }
 
 #users th,

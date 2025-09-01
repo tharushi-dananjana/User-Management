@@ -7,6 +7,9 @@ import { GrAdd } from 'react-icons/gr';
 import DaddUser from './DaddUser';
 import DupdateUser from './DupdateUser';
 
+// Recharts imports
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
 const URL = "http://localhost:5000/doctors";
 
 const fetchHandler = async () => {
@@ -32,7 +35,7 @@ const DoctorHome = () => {
   // Delete handler
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this doctor?");
-    if(confirmDelete) {
+    if (confirmDelete) {
       try {
         await axios.delete(`http://localhost:5000/doctors/${id}`);
         setDoctors(prev => prev.filter(doctor => doctor._id !== id));
@@ -45,13 +48,32 @@ const DoctorHome = () => {
     }
   };
 
-  // Filter doctors by search term (case insensitive)
+  // Filter doctors by search term
   const filteredDoctors = doctors.filter(doctor =>
-  (doctor.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-  (doctor.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-  (doctor.specialization?.toLowerCase() || '').includes(searchTerm.toLowerCase())
-);
+    (doctor.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (doctor.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (doctor.specialization?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+  );
 
+  // Availability Pie Chart Data
+  const availabilityCount = {
+    Available: doctors.filter(doc => doc.available === true).length,
+    Unavailable: doctors.filter(doc => doc.available === false).length,
+  };
+
+  const availabilityData = [
+    { name: "Available", value: availabilityCount.Available },
+    { name: "Unavailable", value: availabilityCount.Unavailable },
+  ];
+
+  // Specialization Pie Chart Data
+  const specList = ["VOG", "Neurologist", "Pediatrics", "Cardiology", "Orthopedics", "Dermatologist"];
+  const specData = specList.map(spec => ({
+    name: spec,
+    value: doctors.filter(doc => doc.specialization === spec).length,
+  }));
+
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8", "#82ca9d"];
 
   return (
     <div>
@@ -71,6 +93,7 @@ const DoctorHome = () => {
         />
       </div>
 
+      {/* Doctors Table */}
       <table id="users">
         <thead>
           <tr>
@@ -105,6 +128,56 @@ const DoctorHome = () => {
           )}
         </tbody>
       </table>
+
+      {/* Charts Section */}
+      <div style={{ display: "flex", justifyContent: "center", gap: "40px", marginTop: "20px" }}>
+        
+        {/* Availability Pie Chart */}
+        <div style={{ width: 350, height: 300 }}>
+          <h3 style={{ textAlign: "center" }}>Availability</h3>
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie
+                data={availabilityData}
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                dataKey="value"
+                label
+              >
+                {availabilityData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Specialization Pie Chart */}
+        <div style={{ width: 350, height: 300 }}>
+          <h3 style={{ textAlign: "center" }}>Specializations</h3>
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie
+                data={specData}
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                dataKey="value"
+                label
+              >
+                {specData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
 
       {/* Add Doctor Button */}
       <div className="float" onClick={() => setShowAddPopup(true)}>
