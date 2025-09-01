@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import User from "./User"; // table row component
+import User from "./User";
 import Nav from '../../components/Nav/Nav';
-import './UserHome.css'; // similar to DoctorHome.css
+import './UserHome.css';
 import { GrAdd } from 'react-icons/gr';
-import AddUser from './AddUser'; // popup add form
-import UpdateUser from './UpdateUser'; // popup update form
+import AddUser from './AddUser';
+import UpdateUser from './UpdateUser';
 
 const URL = "http://localhost:5000/users";
 
@@ -19,16 +19,16 @@ const UserHome = () => {
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); // search state
 
   const getUsers = () => {
-    fetchHandler().then(data => setUsers(data.users));
+    fetchHandler().then(data => setUsers(data.users || []));
   };
 
   useEffect(() => {
     getUsers();
   }, []);
 
-  // Delete handler
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this user?");
     if (confirmDelete) {
@@ -44,12 +44,29 @@ const UserHome = () => {
     }
   };
 
+  // Filter users by search term (case-insensitive)
+  const filteredUsers = users.filter(user =>
+    (user.userName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (user.userPhone?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (user.userGmail?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       <Nav />
-
       <h2 className='mh2'>Users Registration Details</h2>
       {successMessage && <div className="success-popup">{successMessage}</div>}
+
+      {/* Search Input */}
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search users..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+      </div>
 
       <table id="users">
         <thead>
@@ -62,15 +79,15 @@ const UserHome = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, i) => (
+          {filteredUsers.map((user, i) => (
             <User
               key={i}
               user={user}
-              onUpdate={() => {
+              onUpdate={(user) => {
                 setSelectedUser(user);
                 setShowUpdatePopup(true);
               }}
-              onDelete={() => handleDelete(user._id)}
+              onDelete={(id) => handleDelete(id)}
             />
           ))}
         </tbody>

@@ -1,5 +1,5 @@
 import React from 'react';
-import './Users.css'; // new css like Doctors.css
+import './Users.css'; 
 
 const User = ({ user, onUpdate, onDelete }) => {
   const { _id, userName, userPhone, userGmail, userPassword } = user;
@@ -13,10 +13,20 @@ const User = ({ user, onUpdate, onDelete }) => {
       <td>
         <div className="button-container">
           <div className="btnStf">
-            <button className="updatebtn" onClick={onUpdate}>Update</button>
+            <button 
+              className="updatebtn" 
+              onClick={() => onUpdate && onUpdate(user)} // safe guard
+            >
+              Update
+            </button>
           </div>
           <div className="btnStf">
-            <button className="deletebtn" onClick={onDelete}>Delete</button>
+            <button 
+              className="deletebtn" 
+              onClick={() => onDelete && onDelete(_id)} // safe guard
+            >
+              Delete
+            </button>
           </div>
         </div>
       </td>

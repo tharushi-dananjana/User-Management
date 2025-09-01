@@ -8,38 +8,62 @@ body {
 
 .mh2 {
   text-align: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 20px 0;
   color: #333;
   font-size: 22px;
+  font-weight: 600;
 }
 
-/* Doctor Table */
+/* Search bar */
+.search-container {
+  width: 90%;
+  margin: 0 auto 15px auto;
+  text-align: left;   /* ← වම් පැත්තට ගියා */
+}
+
+.search-input {
+  padding: 6px 10px;
+  width: 200px;       /* ← කුඩා කරලා */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
+}
+
+/* Table */
 #users {
-  width: 40%; /* reduced table width */
-  margin: 40px auto 30px auto;
+  width: 90%;
+  margin: 0 auto 25px auto;
   border-collapse: collapse;
   background-color: #fff;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   border-radius: 6px;
   overflow: hidden;
 }
 
-#users th, #users td {
-  padding: 4px 6px; /* reduced padding */
+#users th,
+#users td {
+  padding: 8px 10px;
   text-align: center;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 #users th {
   background-color: #007bff;
   color: #fff;
   font-weight: bold;
-  font-size: 11px; /* smaller font */
+  font-size: 12px;
 }
 
 #users td {
-  font-size: 11px; /* smaller font */
+  font-size: 12px;
+  color: #333;
 }
 
 #users tr:nth-child(even) {
@@ -54,23 +78,24 @@ body {
 .button-container {
   display: flex;
   justify-content: center;
-  gap: 4px;
+  gap: 6px;
 }
 
-.updatebtn, .deletebtn {
-  padding: 3px 6px;
+.updatebtn,
+.deletebtn {
+  padding: 4px 8px;
   border: none;
   border-radius: 4px;
   text-decoration: none;
   color: #fff;
   cursor: pointer;
-  font-size: 10px;
+  font-size: 11px;
+  transition: background-color 0.3s;
 }
 
 .updatebtn {
   background-color: #28a745;
 }
-
 .updatebtn:hover {
   background-color: #218838;
 }
@@ -78,18 +103,24 @@ body {
 .deletebtn {
   background-color: #dc3545;
 }
-
 .deletebtn:hover {
   background-color: #c82333;
 }
 
-/* Floating Add Doctor button - top right */
-.float {
+/* Floating Add Doctor button */
+.float-container {
   position: fixed;
-  width: 45px;
-  height: 45px;
   top: 25px;
   right: 25px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 100;
+}
+
+.float {
+  width: 45px;
+  height: 45px;
   background-color: #007bff;
   color: #fff;
   border-radius: 50%;
@@ -99,27 +130,25 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .float:hover {
   background-color: #0056b3;
 }
 
-/* Label near floating button */
 .label-container {
   position: fixed;
   top: 20px;
   right: 80px;
   background-color: #007bff;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 4px;
   color: #fff;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
 }
-
 .label-container::after {
   content: '';
   position: absolute;
@@ -144,28 +173,40 @@ body {
   z-index: 1000;
   font-size: 13px;
   font-weight: 500;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Responsive */
 @media screen and (max-width: 768px) {
   #users {
-    width: 80%;
+    width: 95%;
   }
 
-  #users th, #users td {
-    padding: 4px 5px;
+  #users th,
+  #users td {
+    padding: 6px 8px;
     font-size: 10px;
   }
 
+  .search-input {
+    width: 160px;  /* small screen → smaller search box */
+    font-size: 12px;
+  }
+
   .float {
-    width: 35px;
-    height: 35px;
+    width: 38px;
+    height: 38px;
     font-size: 18px;
   }
 
   .label-container {
-    right: 60px;
     font-size: 10px;
+    padding: 4px 8px;
   }
 
   .mh2 {

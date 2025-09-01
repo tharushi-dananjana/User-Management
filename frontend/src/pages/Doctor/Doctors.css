@@ -1,6 +1,6 @@
 /* General table styles */
 #users {
-  width: 40%; /* smaller table width */
+  width: 100%; /* smaller table width */
   margin: 40px auto 30px auto;
   border-collapse: collapse;
   background-color: #fff;

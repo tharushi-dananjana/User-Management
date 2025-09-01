@@ -19,6 +19,7 @@ const DoctorHome = () => {
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const getDoctors = () => {
     fetchHandler().then(data => setDoctors(data.doctors));
@@ -44,12 +45,31 @@ const DoctorHome = () => {
     }
   };
 
+  // Filter doctors by search term (case insensitive)
+  const filteredDoctors = doctors.filter(doctor =>
+  (doctor.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+  (doctor.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+  (doctor.specialization?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+);
+
+
   return (
     <div>
       <Nav />
 
       <h2 className='mh2'>Doctors Registration Details</h2>
       {successMessage && <div className="success-popup">{successMessage}</div>}
+
+      {/* Search box */}
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search by name, email, or specialization..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+      </div>
 
       <table id="users">
         <thead>
@@ -64,17 +84,25 @@ const DoctorHome = () => {
           </tr>
         </thead>
         <tbody>
-          {doctors.map((doctor, i) => (
-            <Doctor
-              key={i}
-              doctor={doctor}
-              onUpdate={() => {
-                setSelectedDoctor(doctor);
-                setShowUpdatePopup(true);
-              }}
-              onDelete={() => handleDelete(doctor._id)}
-            />
-          ))}
+          {filteredDoctors.length > 0 ? (
+            filteredDoctors.map((doctor, i) => (
+              <Doctor
+                key={i}
+                doctor={doctor}
+                onUpdate={() => {
+                  setSelectedDoctor(doctor);
+                  setShowUpdatePopup(true);
+                }}
+                onDelete={() => handleDelete(doctor._id)}
+              />
+            ))
+          ) : (
+            <tr>
+              <td colSpan="7" style={{ textAlign: "center", padding: "15px" }}>
+                No doctors found
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
 
