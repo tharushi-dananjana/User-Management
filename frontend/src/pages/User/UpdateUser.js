@@ -1,24 +1,24 @@
+// UpdateUser.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../Doctor/DaddUser.css'; // same popup css
+import './AddUser.css'; // reuse the AddUser popup CSS
 
 const UpdateUser = ({ user, onClose, onUserUpdated }) => {
   const [inputs, setInputs] = useState({});
 
-  // Initialize form inputs with user data
   useEffect(() => {
-    setInputs(user);
+    setInputs(user); // initialize form with user data
   }, [user]);
 
-  // Handle input change
   const handleChange = (e) => {
-    setInputs((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    const { name, value } = e.target;
+    setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submit
+  const handleCheckbox = () => {
+    setInputs((prev) => ({ ...prev, UserAgree: !prev.UserAgree }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -27,8 +27,9 @@ const UpdateUser = ({ user, onClose, onUserUpdated }) => {
         userPhone: String(inputs.userPhone),
         userGmail: String(inputs.userGmail),
         userPassword: String(inputs.userPassword),
+        UserAgree: Boolean(inputs.UserAgree),
       });
-      onUserUpdated(); // refresh user list
+      onUserUpdated(); // refresh user list & show success
       onClose(); // close popup
     } catch (err) {
       console.error(err);
@@ -77,13 +78,20 @@ const UpdateUser = ({ user, onClose, onUserUpdated }) => {
             required
           />
 
+          <label>
+            Agree to Terms:
+            <input
+              type="checkbox"
+              name="UserAgree"
+              checked={inputs.UserAgree || false}
+              onChange={handleCheckbox}
+              style={{ marginLeft: '5px' }}
+            />
+          </label>
           <br /><br />
+
           <button type="submit">Update User</button>
-          <button
-            type="button"
-            onClick={onClose}
-            style={{ marginLeft: '10px' }}
-          >
+          <button type="button" onClick={onClose} style={{ marginLeft: '10px' }}>
             Cancel
           </button>
         </form>

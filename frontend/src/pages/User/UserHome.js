@@ -1,6 +1,7 @@
+// UserHome.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import User from "./User";
+import User from './User';
 import Nav from '../../components/Nav/Nav';
 import './UserHome.css';
 import { GrAdd } from 'react-icons/gr';
@@ -19,16 +20,17 @@ const UserHome = () => {
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
-  const [searchTerm, setSearchTerm] = useState(''); // search state
+  const [searchTerm, setSearchTerm] = useState('');
 
   const getUsers = () => {
-    fetchHandler().then(data => setUsers(data.users || []));
+    fetchHandler().then(data => setUsers(data.users));
   };
 
   useEffect(() => {
     getUsers();
   }, []);
 
+  // Delete handler
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this user?");
     if (confirmDelete) {
@@ -44,24 +46,25 @@ const UserHome = () => {
     }
   };
 
-  // Filter users by search term (case-insensitive)
+  // Filter users by search term
   const filteredUsers = users.filter(user =>
     (user.userName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-    (user.userPhone?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-    (user.userGmail?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+    (user.userGmail?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (user.userPhone?.toLowerCase() || '').includes(searchTerm.toLowerCase())
   );
 
   return (
     <div>
       <Nav />
+
       <h2 className='mh2'>Users Registration Details</h2>
       {successMessage && <div className="success-popup">{successMessage}</div>}
 
-      {/* Search Input */}
+      {/* Search box */}
       <div className="search-container">
         <input
           type="text"
-          placeholder="Search users..."
+          placeholder="Search by name, email, or phone..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
@@ -74,22 +77,30 @@ const UserHome = () => {
             <th>Name</th>
             <th>Phone</th>
             <th>Email</th>
-            <th>Password</th>
+            <th>Agreed Terms</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map((user, i) => (
-            <User
-              key={i}
-              user={user}
-              onUpdate={(user) => {
-                setSelectedUser(user);
-                setShowUpdatePopup(true);
-              }}
-              onDelete={(id) => handleDelete(id)}
-            />
-          ))}
+          {filteredUsers.length > 0 ? (
+            filteredUsers.map((user, i) => (
+              <User
+                key={i}
+                user={user}
+                onUpdate={() => {
+                  setSelectedUser(user);
+                  setShowUpdatePopup(true);
+                }}
+                onDelete={() => handleDelete(user._id)}
+              />
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5" style={{ textAlign: "center", padding: "15px" }}>
+                No users found
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
 

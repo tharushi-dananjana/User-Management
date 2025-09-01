@@ -1,6 +1,7 @@
+// AddUser.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import './AddUser.css'; // same style like DaddUser.css
+import './AddUser.css';
 
 const AddUser = ({ onClose, onUserAdded }) => {
   const [inputs, setInputs] = useState({
@@ -11,17 +12,15 @@ const AddUser = ({ onClose, onUserAdded }) => {
     UserAgree: false,
   });
 
-  // handle text field changes
   const handleChange = (e) => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
-  // handle checkbox
   const handleCheckbox = () => {
     setInputs((prev) => ({ ...prev, UserAgree: !prev.UserAgree }));
   };
 
-  // form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -33,7 +32,7 @@ const AddUser = ({ onClose, onUserAdded }) => {
         UserAgree: Boolean(inputs.UserAgree),
       });
 
-      // reset form
+      // Reset inputs
       setInputs({
         userName: '',
         userPhone: '',
@@ -42,7 +41,7 @@ const AddUser = ({ onClose, onUserAdded }) => {
         UserAgree: false,
       });
 
-      onUserAdded(); // refresh list
+      onUserAdded(); // refresh user list and show success
       onClose(); // close popup
     } catch (err) {
       console.error(err);
@@ -56,22 +55,57 @@ const AddUser = ({ onClose, onUserAdded }) => {
         <h3>Add User</h3>
         <form onSubmit={handleSubmit}>
           <label>Name:</label>
-          <input type="text" name="userName" value={inputs.userName} onChange={handleChange} required />
+          <input
+            type="text"
+            name="userName"
+            value={inputs.userName}
+            onChange={handleChange}
+            required
+          />
 
           <label>Phone:</label>
-          <input type="text" name="userPhone" value={inputs.userPhone} onChange={handleChange} required />
+          <input
+            type="text"
+            name="userPhone"
+            value={inputs.userPhone}
+            onChange={handleChange}
+            required
+          />
 
           <label>Email:</label>
-          <input type="email" name="userGmail" value={inputs.userGmail} onChange={handleChange} required />
+          <input
+            type="email"
+            name="userGmail"
+            value={inputs.userGmail}
+            onChange={handleChange}
+            required
+          />
 
           <label>Password:</label>
-          <input type="password" name="userPassword" value={inputs.userPassword} onChange={handleChange} required />
+          <input
+            type="password"
+            name="userPassword"
+            value={inputs.userPassword}
+            onChange={handleChange}
+            required
+          />
 
-          <label>Agree to Terms:</label>
-          <input type="checkbox" name="UserAgree" checked={inputs.UserAgree} onChange={handleCheckbox} /><br /><br />
+          <label>
+            Agree to Terms:
+            <input
+              type="checkbox"
+              name="UserAgree"
+              checked={inputs.UserAgree}
+              onChange={handleCheckbox}
+              style={{ marginLeft: '5px' }}
+            />
+          </label>
+          <br /><br />
 
           <button type="submit">Register User</button>
-          <button type="button" onClick={onClose} style={{ marginLeft: '10px' }}>Cancel</button>
+          <button type="button" onClick={onClose} style={{ marginLeft: '10px' }}>
+            Cancel
+          </button>
         </form>
       </div>
     </div>

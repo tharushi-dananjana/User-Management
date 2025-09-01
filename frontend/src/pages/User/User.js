@@ -1,32 +1,23 @@
+// User.js
 import React from 'react';
-import './Users.css'; 
+import './User.css';
 
 const User = ({ user, onUpdate, onDelete }) => {
-  const { _id, userName, userPhone, userGmail, userPassword } = user;
+  const { _id, userName, userPhone, userGmail, UserAgree } = user;
 
   return (
     <tr>
       <td>{userName}</td>
       <td>{userPhone}</td>
       <td>{userGmail}</td>
-      <td>{userPassword}</td>
+      <td>{UserAgree ? "Yes" : "No"}</td>
       <td>
         <div className="button-container">
           <div className="btnStf">
-            <button 
-              className="updatebtn" 
-              onClick={() => onUpdate && onUpdate(user)} // safe guard
-            >
-              Update
-            </button>
+            <button className="updatebtn" onClick={onUpdate}>Update</button>
           </div>
           <div className="btnStf">
-            <button 
-              className="deletebtn" 
-              onClick={() => onDelete && onDelete(_id)} // safe guard
-            >
-              Delete
-            </button>
+            <button className="deletebtn" onClick={onDelete}>Delete</button>
           </div>
         </div>
       </td>

@@ -11,7 +11,6 @@ import DupdateUser from "./pages/Doctor/DupdateUser";
 import AddUserD from "./pages/Doctor/DaddUser";
 import Regs from "./pages/Reg/Regs";
 import Login from "./pages/Login/Login";
-import UserProfile from "./pages/User/UserProfile";
 
 function App() {
   return (
@@ -26,7 +25,6 @@ function App() {
       <Route path="/Dadduser" element={<AddUserD />} />
       <Route path="/reg" element={<Regs />} />
       <Route path="/loginH" element={<Login />} />
-      <Route path="/adduserH" element={<UserProfile />} />
     </Routes>
   );
 }
