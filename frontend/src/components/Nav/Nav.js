@@ -29,7 +29,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/adduserH">
+          <Link to="/UserHome">
             <BiUser className="icon" />
             User Management
           </Link>
