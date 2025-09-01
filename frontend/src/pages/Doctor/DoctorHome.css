@@ -18,12 +18,12 @@ body {
 .search-container {
   width: 90%;
   margin: 0 auto 15px auto;
-  text-align: left;   /* ← වම් පැත්තට ගියා */
+  text-align: left;
 }
 
 .search-input {
   padding: 6px 10px;
-  width: 200px;       /* ← කුඩා කරලා */
+  width: 200px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 13px;
@@ -38,32 +38,33 @@ body {
 
 /* Table */
 #users {
-  width: 90%;
-  margin: 0 auto 25px auto;
+  width: 50%;              /* 👈 70% → 50% (smaller table) */
+  margin: 0 auto 20px auto; 
   border-collapse: collapse;
   background-color: #fff;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   border-radius: 6px;
   overflow: hidden;
+  padding: 50px;              /* 👈 remove padding-left/right */
 }
 
 #users th,
 #users td {
-  padding: 8px 10px;
+  padding: 5px 7px;          /* 👈 reduced padding */
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #ddd;
 }
 
 #users th {
-  background-color: #007bff;
+  background-color: #6a0dad;  /* 👈 dark purple */
   color: #fff;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 #users td {
-  font-size: 12px;
-  color: #333;
+  font-size: 11px;
+  color: #444;
 }
 
 #users tr:nth-child(even) {
@@ -108,56 +109,27 @@ body {
 }
 
 /* Floating Add Doctor button */
-.float-container {
-  position: fixed;
-  top: 25px;
-  right: 25px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  z-index: 100;
-}
-
 .float {
-  width: 45px;
-  height: 45px;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 55px;
+  height: 55px;
   background-color: #007bff;
   color: #fff;
   border-radius: 50%;
   text-align: center;
-  font-size: 22px;
+  font-size: 28px;
   box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   transition: background-color 0.3s;
+  z-index: 100;
 }
 .float:hover {
   background-color: #0056b3;
-}
-
-.label-container {
-  position: fixed;
-  top: 20px;
-  right: 80px;
-  background-color: #007bff;
-  padding: 6px 12px;
-  border-radius: 4px;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 500;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-}
-.label-container::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 100%;
-  margin-top: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent transparent transparent #007bff;
 }
 
 /* Success popup */
@@ -194,19 +166,14 @@ body {
   }
 
   .search-input {
-    width: 160px;  /* small screen → smaller search box */
+    width: 160px;
     font-size: 12px;
   }
 
   .float {
-    width: 38px;
-    height: 38px;
-    font-size: 18px;
-  }
-
-  .label-container {
-    font-size: 10px;
-    padding: 4px 8px;
+    width: 45px;
+    height: 45px;
+    font-size: 22px;
   }
 
   .mh2 {

@@ -10,8 +10,36 @@
 .logo {
   font-size: 22px;
   font-weight: bold;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   text-align: center;
+}
+
+/* Profile Section */
+.profile-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%; /* makes image circular */
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.profile-pic:hover {
+  transform: scale(1.05);
+}
+
+.profile-name {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ecf0f1;
 }
 
 .nav-links {

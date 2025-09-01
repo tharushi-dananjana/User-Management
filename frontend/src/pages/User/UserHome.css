@@ -44,11 +44,13 @@ body {
 
 /* Users table */
 #users {
-  width: 90%;
+  width: 70%;
   margin: 0 auto 40px auto;
   border-collapse: collapse;
   background-color: #fff;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-right: 95px;
+  margin-top: 15px;
 }
 
 #users th, #users td {

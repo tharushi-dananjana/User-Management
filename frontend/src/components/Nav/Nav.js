@@ -4,11 +4,19 @@ import "./Nav.css";
 import { BiHome, BiLogOut, BiUser, BiUserCircle } from "react-icons/bi";
 import { FaUsers } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
+import profilePic from "./images/logo.png";
 
 const Sidebar = () => {
   return (
     <div className="sidebar">
       <h2 className="logo">Ayu Mantra</h2>
+
+      {/* Profile Section */}
+      <div className="profile-section">
+        <img src={profilePic} alt="Profile" className="profile-pic" />
+        <p className="profile-name">Tharushi</p>
+      </div>
+
       <ul className="nav-links">
         <li>
           <Link to="/AmainHome">
@@ -34,7 +42,6 @@ const Sidebar = () => {
             User Management
           </Link>
         </li>
-        {/* New Profile Link */}
         <li>
           <Link to="/profile">
             <BiUserCircle className="icon" />

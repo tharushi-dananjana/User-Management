@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // ✅ useNavigate
 import axios from 'axios';
 import './Login.css';
 
@@ -7,6 +7,8 @@ export default function Login() {
   const [userGmail, setUserGmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate(); // ✅ create navigate function
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,9 +18,20 @@ export default function Login() {
         password: userPassword
       });
 
+      // Assuming your backend sends role or userType in the response
+      // e.g., response.data.role === 'admin' or 'doctor'
       if (response.status === 200) {
         alert('Login Successful!');
-        window.location.href = '/maiHome';
+        const role = response.data.role; // check the role from response
+
+        if (role === 'admin') {
+          navigate('/adminHome'); // navigate to admin page
+        } else if (role === 'doctor') {
+          navigate('/doctorHome'); // navigate to doctor page
+        } else {
+          setErrorMessage('Unknown role. Cannot navigate.');
+        }
+
       } else {
         alert('Invalid Email or Password. Try Again!');
       }
@@ -30,12 +43,10 @@ export default function Login() {
 
   return (
     <div className="login-page">
-      {/* Left Side Welcome Text */}
       <div className="left-side">
         <h1>Welcome to <br /> Ayu Mantra</h1>
       </div>
 
-      {/* Right Side Form */}
       <div className="right-side">
         <div className='form-container'>
           <div className='ful'>
