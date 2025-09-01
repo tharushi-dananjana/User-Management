@@ -14,7 +14,7 @@ const Sidebar = () => {
       {/* Profile Section */}
       <div className="profile-section">
         <img src={profilePic} alt="Profile" className="profile-pic" />
-        <p className="profile-name">Tharushi</p>
+        <p className="profile-name">Admin</p>
       </div>
 
       <ul className="nav-links">

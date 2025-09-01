@@ -32,38 +32,32 @@ const DoctorHome = () => {
     getDoctors();
   }, []);
 
-  // Delete handler
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this doctor?");
-    if (confirmDelete) {
-      try {
-        await axios.delete(`http://localhost:5000/doctors/${id}`);
-        setDoctors(prev => prev.filter(doctor => doctor._id !== id));
-        setSuccessMessage('Doctor deleted successfully!');
-        setTimeout(() => setSuccessMessage(''), 3000);
-      } catch (err) {
-        console.error(err);
-        alert('Failed to delete doctor.');
-      }
+  // Toggle doctor availability (Activate/Deactivate)
+  const toggleAvailability = async (doctor) => {
+    try {
+      await axios.put(`${URL}/${doctor._id}`, { available: !doctor.available });
+      setDoctors(prev =>
+        prev.map(d => d._id === doctor._id ? { ...d, available: !d.available } : d)
+      );
+      setSuccessMessage(`Doctor ${doctor.available ? "deactivated" : "activated"} successfully!`);
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update doctor's availability.");
     }
   };
 
   // Filter doctors by search term
   const filteredDoctors = doctors.filter(doctor =>
-    (doctor.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-    (doctor.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (doctor.doctorName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (doctor.doctorEmail?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
     (doctor.specialization?.toLowerCase() || '').includes(searchTerm.toLowerCase())
   );
 
   // Availability Pie Chart Data
-  const availabilityCount = {
-    Available: doctors.filter(doc => doc.available === true).length,
-    Unavailable: doctors.filter(doc => doc.available === false).length,
-  };
-
   const availabilityData = [
-    { name: "Available", value: availabilityCount.Available },
-    { name: "Unavailable", value: availabilityCount.Unavailable },
+    { name: "Available", value: doctors.filter(doc => doc.available === true).length },
+    { name: "Unavailable", value: doctors.filter(doc => doc.available === false).length },
   ];
 
   // Specialization Pie Chart Data
@@ -82,7 +76,7 @@ const DoctorHome = () => {
       <h2 className='mh2'>Doctors Registration Details</h2>
       {successMessage && <div className="success-popup">{successMessage}</div>}
 
-      {/* Search box */}
+      {/* Search Box */}
       <div className="search-container">
         <input
           type="text"
@@ -116,7 +110,7 @@ const DoctorHome = () => {
                   setSelectedDoctor(doctor);
                   setShowUpdatePopup(true);
                 }}
-                onDelete={() => handleDelete(doctor._id)}
+                onToggleAvailability={() => toggleAvailability(doctor)}
               />
             ))
           ) : (
@@ -131,7 +125,6 @@ const DoctorHome = () => {
 
       {/* Charts Section */}
       <div style={{ display: "flex", justifyContent: "center", gap: "40px", marginTop: "20px" }}>
-        
         {/* Availability Pie Chart */}
         <div style={{ width: 350, height: 300 }}>
           <h3 style={{ textAlign: "center" }}>Availability</h3>

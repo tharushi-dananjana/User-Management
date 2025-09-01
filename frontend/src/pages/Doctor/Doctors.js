@@ -1,8 +1,9 @@
 import React from 'react';
+import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai';
 import './Doctors.css';
 
-const Doctor = ({ doctor, onUpdate, onDelete }) => {
-  const { _id, doctorName, doctorPhone, doctorEmail, specialization, experienceYears, available } = doctor;
+const Doctor = ({ doctor, onUpdate, onToggleAvailability }) => {
+  const { doctorName, doctorPhone, doctorEmail, specialization, experienceYears, available } = doctor;
 
   return (
     <tr>
@@ -14,11 +15,24 @@ const Doctor = ({ doctor, onUpdate, onDelete }) => {
       <td>{available ? "Yes" : "No"}</td>
       <td>
         <div className="button-container">
+          {/* Update Button */}
           <div className="btnStf">
             <button className="updatebtn" onClick={onUpdate}>Update</button>
           </div>
+
+          {/* Activate/Deactivate Button */}
           <div className="btnStf">
-            <button className="deletebtn" onClick={onDelete}>Delete</button>
+            <button 
+              className={`availability-btn ${available ? 'active' : 'inactive'}`} 
+              onClick={onToggleAvailability}
+              title={available ? "Deactivate Doctor" : "Activate Doctor"}
+            >
+              {available ? (
+                <AiOutlineCheckCircle size={20} color="green" />
+              ) : (
+                <AiOutlineCloseCircle size={20} color="red" />
+              )}
+            </button>
           </div>
         </div>
       </td>
@@ -27,6 +41,3 @@ const Doctor = ({ doctor, onUpdate, onDelete }) => {
 };
 
 export default Doctor;
-
-
-
