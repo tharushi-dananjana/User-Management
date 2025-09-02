@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./AdminProfile.css";
+import './AdminProfile.css';
 
 const AdminProfile = () => {
   const [admin, setAdmin] = useState(null);

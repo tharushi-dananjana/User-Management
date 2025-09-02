@@ -1,6 +1,4 @@
-/* Admin.css */
-
-/* Page background */
+/* General */
 body {
   font-family: Arial, Helvetica, sans-serif;
   background: #f8f9fa;
@@ -9,86 +7,132 @@ body {
 }
 
 /* Page heading */
-.Uh2 {
+.admin-title {
   text-align: center;
-  font-size: 26px;
-  color: #333;
   margin-top: 20px;
-  margin-bottom: 20px;
+  color: #333;
+  font-size: 26px;
 }
 
-/* Form container */
-.container {
+/* Buttons */
+.action-buttons {
+  text-align: center;
+  margin: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+}
+
+.btn-success {
+  background: #28a745;
+  color: #fff;
+}
+
+.btn-success:hover {
+  background: #1e7e34;
+}
+
+/* Dashboard Cards */
+.dashboard-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 50px;
+  margin-top: 50px;
+}
+
+.card {
+  flex: 1 1 200px;
+  max-width: 260px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card .count {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.card .active {
+  color: #28a745;
+}
+
+.card .inactive {
+  color: #dc3545;
+}
+
+/* Charts */
+.charts {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 50px;
+  margin-top: 40px;
+}
+
+.chart-card {
+  flex: 1 1 280px;
+  max-width: 300px;
+  background: #e0e0e0;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.chart {
+  width: 100%;
+  height: 220px;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
-  max-width: 600px;
-  background: #ffffff;
-  padding: 25px 30px;
-  border-radius: 12px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
-/* Form */
-.Ufom {
-  width: 100%;
-}
-
-/* Form groups */
-.form-group {
-  margin-bottom: 18px;
-}
-
-.form-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 6px;
-  color: #555;
-}
-
-/* Input fields */
-.input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 15px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
-  outline: none;
-}
-
-/* Button wrapper */
-.btnn {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-/* Submit button */
-.btnsub {
-  background: #007bff;
-  color: white;
-  padding: 12px 25px;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
+.modal {
+  background: #fff;
+  padding: 20px;
   border-radius: 10px;
+  width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.modal-close {
+  float: right;
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.btnsub:hover {
-  background: #0056b3;
-  transform: translateY(-2px);
-}
-
-.btnsub:active {
-  background: #004494;
-  transform: translateY(1px);
 }

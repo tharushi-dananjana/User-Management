@@ -6,7 +6,7 @@ import { FaUsers } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
 import profilePic from "./images/logo.png";
 
-const Sidebar = () => {
+const Sidebar = ({ onProfileClick }) => {
   return (
     <div className="sidebar">
       <h2 className="logo">Ayu Mantra</h2>
@@ -42,12 +42,7 @@ const Sidebar = () => {
             User Management
           </Link>
         </li>
-        <li>
-          <Link to="/AdminProfile">
-            <BiUserCircle className="icon" />
-            Profile
-          </Link>
-        </li>
+
         <li className="logout">
           <Link to="/">
             <BiLogOut className="icon" />

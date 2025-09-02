@@ -11,6 +11,8 @@ import {
 import Nav from "../../components/Nav/Nav";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import AdminProfile from "./AdminProfile"; // ✅ Make sure path is correct
+import "./Admin.css"; // ✅ Import CSS
 
 // API URLs
 const DOCTORS_URL = "http://localhost:5000/doctors";
@@ -21,6 +23,7 @@ const COLORS = ["#28a745", "#dc3545"];
 const AdminHome = () => {
   const [doctors, setDoctors] = useState([]);
   const [users, setUsers] = useState([]);
+  const [showProfile, setShowProfile] = useState(false);
 
   // Fetch doctors
   const fetchDoctors = async () => {
@@ -47,16 +50,15 @@ const AdminHome = () => {
     fetchUsers();
   }, []);
 
-  // Doctor chart data
+  // Chart data
   const doctorStatusData = [
-    { name: "Available", value: doctors.filter((doc) => doc.available === true).length },
-    { name: "Unavailable", value: doctors.filter((doc) => doc.available === false).length },
+    { name: "Available", value: doctors.filter((doc) => doc.available).length },
+    { name: "Unavailable", value: doctors.filter((doc) => !doc.available).length },
   ];
 
-  // User chart data
   const userStatusData = [
-    { name: "Active", value: users.filter((u) => u.isActive === true).length },
-    { name: "Inactive", value: users.filter((u) => u.isActive === false).length },
+    { name: "Active", value: users.filter((u) => u.isActive).length },
+    { name: "Inactive", value: users.filter((u) => !u.isActive).length },
   ];
 
   const activeUsers = userStatusData[0].value;
@@ -64,7 +66,7 @@ const AdminHome = () => {
   const activeDoctors = doctorStatusData[0].value;
   const inactiveDoctors = doctorStatusData[1].value;
 
-  // ✅ PDF download function for doctors
+  // PDF download
   const downloadDoctorPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(18);
@@ -99,61 +101,47 @@ const AdminHome = () => {
   return (
     <div>
       <Nav />
+      <h1 className="admin-title">Admin Dashboard</h1>
 
-      <h1 style={{ textAlign: "center", marginTop: "20px", color: "#333" }}>
-        Admin Dashboard
-      </h1>
-
-      {/* Download PDF button */}
-      <div style={{ textAlign: "center", margin: "20px" }}>
-        <button
-          onClick={downloadDoctorPDF}
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#007bff",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
+      {/* Action Buttons */}
+      <div className="action-buttons">
+        <button className="btn btn-primary" onClick={downloadDoctorPDF}>
           Download Doctor Report (PDF)
+        </button>
+        <button className="btn btn-success" onClick={() => setShowProfile(true)}>
+          View Profile
         </button>
       </div>
 
       {/* Dashboard Cards */}
-      <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "50px", marginTop: "50px" }}>
-        {/* Total Users */}
-        <div style={{ flex: "1 1 200px", maxWidth: "260px", background: "#f8f9fa", padding: "15px", borderRadius: "10px", textAlign: "center", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
+      <div className="dashboard-cards">
+        <div className="card">
           <h3>Total Users</h3>
-          <p style={{ fontSize: "22px", fontWeight: "bold" }}>{users.length}</p>
-          <p style={{ color: "#28a745" }}>Active: {activeUsers}</p>
-          <p style={{ color: "#dc3545" }}>Inactive: {inactiveUsers}</p>
+          <p className="count">{users.length}</p>
+          <p className="active">Active: {activeUsers}</p>
+          <p className="inactive">Inactive: {inactiveUsers}</p>
         </div>
 
-        {/* Total Doctors */}
-        <div style={{ flex: "1 1 200px", maxWidth: "260px", background: "#f8f9fa", padding: "15px", borderRadius: "10px", textAlign: "center", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
+        <div className="card">
           <h3>Total Doctors</h3>
-          <p style={{ fontSize: "22px", fontWeight: "bold" }}>{doctors.length}</p>
-          <p style={{ color: "#28a745" }}>Active: {activeDoctors}</p>
-          <p style={{ color: "#dc3545" }}>Inactive: {inactiveDoctors}</p>
+          <p className="count">{doctors.length}</p>
+          <p className="active">Active: {activeDoctors}</p>
+          <p className="inactive">Inactive: {inactiveDoctors}</p>
         </div>
 
-        {/* Total patient */}
-        <div style={{ flex: "1 1 200px", maxWidth: "260px", background: "#f8f9fa", padding: "15px", borderRadius: "10px", textAlign: "center", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
-          <h3>Total Patient</h3>
-          <p style={{ fontSize: "22px", fontWeight: "bold" }}>{users.length}</p>
-          <p style={{ color: "#28a745" }}>Active: {activeUsers}</p>
-          <p style={{ color: "#dc3545" }}>Inactive: {inactiveUsers}</p>
+        <div className="card">
+          <h3>Total Patients</h3>
+          <p className="count">{users.length}</p>
+          <p className="active">Active: {activeUsers}</p>
+          <p className="inactive">Inactive: {inactiveUsers}</p>
         </div>
       </div>
 
       {/* Pie Charts */}
-      <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "50px", marginTop: "40px" }}>
-        <div style={{ flex: "1 1 280px", maxWidth: "300px", background: "#b6b3b3ff", padding: "15px", borderRadius: "10px", textAlign: "center", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
+      <div className="charts">
+        <div className="chart-card">
           <h3>Doctor Status</h3>
-          <div style={{ width: "100%", height: 220 }}>
+          <div className="chart">
             <ResponsiveContainer>
               <PieChart>
                 <Pie data={doctorStatusData} cx="50%" cy="50%" outerRadius={80} dataKey="value" label>
@@ -168,9 +156,9 @@ const AdminHome = () => {
           </div>
         </div>
 
-        <div style={{ flex: "1 1 280px", maxWidth: "300px", background: "#b6b3b3ff", padding: "15px", borderRadius: "10px", textAlign: "center", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
+        <div className="chart-card">
           <h3>User Status</h3>
-          <div style={{ width: "100%", height: 220 }}>
+          <div className="chart">
             <ResponsiveContainer>
               <PieChart>
                 <Pie data={userStatusData} cx="50%" cy="50%" outerRadius={80} dataKey="value" label>
@@ -185,6 +173,18 @@ const AdminHome = () => {
           </div>
         </div>
       </div>
+
+      {/* Profile Popup */}
+      {showProfile && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <button className="modal-close" onClick={() => setShowProfile(false)}>
+              X
+            </button>
+            <AdminProfile />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
