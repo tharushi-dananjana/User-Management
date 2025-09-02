@@ -32,6 +32,7 @@ const doctorSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  
 });
 
 module.exports = mongoose.model('Doctor', doctorSchema);

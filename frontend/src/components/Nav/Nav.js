@@ -43,7 +43,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/profile">
+          <Link to="/AdminProfile">
             <BiUserCircle className="icon" />
             Profile
           </Link>

@@ -1,9 +1,9 @@
 const Admin = require('../model/Admin');
 
 // Get all admins
-const getAllAdmins = async (req, res, next) => {
+const getAllAdmins = async (req, res) => {
   try {
-    const admins = await Admin.find();
+    const admins = await Admin.find().select('-adminPassword');
     return res.status(200).json({ admins });
   } catch (err) {
     console.error(err);
@@ -12,16 +12,10 @@ const getAllAdmins = async (req, res, next) => {
 };
 
 // Add new admin
-const addAdmin = async (req, res, next) => {
+const addAdmin = async (req, res) => {
   const { adminName, adminEmail, adminPhone, adminPassword } = req.body;
-
   try {
-    const admin = new Admin({
-      adminName,
-      adminEmail,
-      adminPhone,
-      adminPassword,
-    });
+    const admin = new Admin({ adminName, adminEmail, adminPhone, adminPassword });
     await admin.save();
     return res.status(201).json({ admin });
   } catch (err) {
@@ -31,18 +25,13 @@ const addAdmin = async (req, res, next) => {
 };
 
 // Get admin by ID
-const getAdminById = async (req, res, next) => {
-  const id = req.params.id.trim();
-
-  if (!id || id.length !== 24) {
-    return res.status(400).json({ message: 'Invalid admin ID format.' });
-  }
+const getAdminById = async (req, res) => {
+  const id = req.params.id?.trim();
+  if (!id || id.length !== 24) return res.status(400).json({ message: 'Invalid admin ID.' });
 
   try {
-    const admin = await Admin.findById(id);
-    if (!admin) {
-      return res.status(404).json({ message: 'Admin not found.' });
-    }
+    const admin = await Admin.findById(id).select('-adminPassword');
+    if (!admin) return res.status(404).json({ message: 'Admin not found.' });
     return res.status(200).json({ admin });
   } catch (err) {
     console.error(err);
@@ -51,30 +40,20 @@ const getAdminById = async (req, res, next) => {
 };
 
 // Update admin
-const updateAdmin = async (req, res, next) => {
-  const id = req.params.id.trim();
-
-  if (!id || id.length !== 24) {
-    return res.status(400).json({ message: 'Invalid admin ID format.' });
-  }
-
+const updateAdmin = async (req, res) => {
+  const id = req.params.id?.trim();
   const { adminName, adminEmail, adminPhone, adminPassword } = req.body;
+
+  if (!id || id.length !== 24) return res.status(400).json({ message: 'Invalid admin ID.' });
 
   try {
     const admin = await Admin.findByIdAndUpdate(
       id,
-      {
-        adminName,
-        adminEmail,
-        adminPhone,
-        adminPassword,
-      },
+      { adminName, adminEmail, adminPhone, adminPassword },
       { new: true }
-    );
+    ).select('-adminPassword');
 
-    if (!admin) {
-      return res.status(404).json({ message: 'Admin not found.' });
-    }
+    if (!admin) return res.status(404).json({ message: 'Admin not found.' });
     return res.status(200).json({ admin });
   } catch (err) {
     console.error(err);
@@ -83,24 +62,20 @@ const updateAdmin = async (req, res, next) => {
 };
 
 // Delete admin
-const deleteAdmin = async (req, res, next) => {
-  const id = req.params.id.trim();
-
-  if (!id || id.length !== 24) {
-    return res.status(400).json({ message: 'Invalid admin ID format.' });
-  }
+const deleteAdmin = async (req, res) => {
+  const id = req.params.id?.trim();
+  if (!id || id.length !== 24) return res.status(400).json({ message: 'Invalid admin ID.' });
 
   try {
     const admin = await Admin.findByIdAndRemove(id);
-    if (!admin) {
-      return res.status(404).json({ message: 'Admin not found.' });
-    }
+    if (!admin) return res.status(404).json({ message: 'Admin not found.' });
     return res.status(200).json({ message: 'Admin successfully deleted.' });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: 'An error occurred while deleting the admin.' });
   }
 };
+
 
 module.exports = {
   getAllAdmins,
