@@ -1,10 +1,10 @@
 // UserHome.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import User from './User';
 import Nav from '../../components/Nav/Nav';
 import './UserHome.css';
 import { GrAdd } from 'react-icons/gr';
+import { FiToggleLeft, FiToggleRight } from 'react-icons/fi'; // icons for toggle
 import AddUser from './AddUser';
 import UpdateUser from './UpdateUser';
 
@@ -29,6 +29,21 @@ const UserHome = () => {
   useEffect(() => {
     getUsers();
   }, []);
+
+  // Toggle user status (Active / Inactive)
+  const toggleUserStatus = async (user) => {
+    try {
+      await axios.put(`${URL}/${user._id}`, { isActive: !user.isActive });
+      setUsers(prev =>
+        prev.map(u => u._id === user._id ? { ...u, isActive: !u.isActive } : u)
+      );
+      setSuccessMessage(`User ${user.isActive ? "deactivated" : "activated"} successfully!`);
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update user status.");
+    }
+  };
 
   // Filter users by search term
   const filteredUsers = users.filter(user =>
@@ -76,7 +91,8 @@ const UserHome = () => {
                 <td>{user.UserAgree ? "Yes" : "No"}</td>
                 <td>{user.isActive ? "Active" : "Inactive"}</td>
                 <td>
-                  <div className="button-container">
+                  <div className="button-container" style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+                    {/* Update button */}
                     <button
                       className="updatebtn"
                       onClick={() => {
@@ -85,6 +101,21 @@ const UserHome = () => {
                       }}
                     >
                       Update
+                    </button>
+
+                    {/* Toggle Status Icon */}
+                    <button
+                      onClick={() => toggleUserStatus(user)}
+                      style={{
+                        border: 'none',
+                        background: 'transparent',
+                        cursor: 'pointer',
+                        fontSize: '24px',
+                        color: user.isActive ? '#28a745' : '#dc3545',
+                      }}
+                      title={user.isActive ? "Deactivate User" : "Activate User"}
+                    >
+                      {user.isActive ? <FiToggleRight /> : <FiToggleLeft />}
                     </button>
                   </div>
                 </td>
