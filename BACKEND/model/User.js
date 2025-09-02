@@ -23,6 +23,10 @@ const userSchema = new Schema({
     type: Boolean,
     required: true,
   },
+  isActive: {                  // New field for active/deactive status
+    type: Boolean,
+    default: true,             // By default, a new user is active
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);

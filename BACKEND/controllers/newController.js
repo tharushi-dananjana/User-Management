@@ -1,6 +1,6 @@
 const User = require('../model/User');
 
-
+// Get all users
 const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
@@ -11,7 +11,7 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
-//data Insert
+// Add new user
 const addUser = async (req, res, next) => {
   const { userName, userPhone, userGmail, userPassword, UserAgree } = req.body;
 
@@ -22,6 +22,7 @@ const addUser = async (req, res, next) => {
       userGmail,
       userPassword,
       UserAgree,
+      isActive: true, // default active
     });
     await user.save();
     return res.status(201).json({ user });
@@ -31,11 +32,10 @@ const addUser = async (req, res, next) => {
   }
 };
 
-//Get by Id
+// Get user by ID
 const getById = async (req, res, next) => {
   const id = req.params.id.trim();
 
-  // Check if the ID is a valid ObjectId
   if (!id || id.length !== 24) {
     return res.status(400).json({ message: 'Invalid user ID format.' });
   }
@@ -52,40 +52,37 @@ const getById = async (req, res, next) => {
   }
 };
 
-const updateUser = async (req, res, next) => {
-  const id = req.params.id.trim();
-
-  if (!id || id.length !== 24) {
-    return res.status(400).json({ message: 'Invalid user ID format.' });
-  }
-
-  const { userName, userPhone, userGmail, userPassword, UserAgree } = req.body;
+// ✅ FIXED: define updateUser as const
+const updateUser = async (req, res) => {
+  const userId = req.params.id;
+  const { userName, userPhone, userGmail, userPassword, UserAgree, isActive } = req.body;
 
   try {
-    const user = await User.findByIdAndUpdate(
-      id,
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
       {
         userName,
         userPhone,
         userGmail,
         userPassword,
-        UserAgree,
+        UserAgree: Boolean(UserAgree),
+        isActive: isActive === true || isActive === 'true',
       },
       { new: true }
     );
 
-    //not Insert user
-    if (!user) {
-      return res.status(404).json({ message: 'User not found.' });
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
     }
-    return res.status(200).json({ user });
+
+    res.json(updatedUser);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: 'An error occurred while updating the user.' });
+    res.status(500).json({ message: 'Failed to update user', error: err });
   }
 };
 
-//Delete user details
+// Delete user
 const deleteUser = async (req, res, next) => {
   const id = req.params.id.trim();
 
@@ -105,10 +102,39 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+// Toggle user active/deactive status
+const toggleUserStatus = async (req, res, next) => {
+  const id = req.params.id.trim();
+
+  if (!id || id.length !== 24) {
+    return res.status(400).json({ message: 'Invalid user ID format.' });
+  }
+
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    user.isActive = !user.isActive;
+    await user.save();
+
+    return res.status(200).json({
+      message: `User has been ${user.isActive ? 'activated' : 'deactivated'} successfully.`,
+      user,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'An error occurred while updating user status.' });
+  }
+};
+
+// Export all
 module.exports = {
   getAllUsers,
   addUser,
   getById,
-  updateUser,
+  updateUser,   // ✅ now correctly defined
   deleteUser,
+  toggleUserStatus,
 };

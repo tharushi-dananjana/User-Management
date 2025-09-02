@@ -10,11 +10,15 @@ const AddUser = ({ onClose, onUserAdded }) => {
     userGmail: '',
     userPassword: '',
     UserAgree: false,
+    isActive: true, // Active by default
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setInputs((prev) => ({ ...prev, [name]: value }));
+    setInputs((prev) => ({
+      ...prev,
+      [name]: name === 'isActive' ? value === 'true' : value, // convert string to boolean for isActive
+    }));
   };
 
   const handleCheckbox = () => {
@@ -25,24 +29,27 @@ const AddUser = ({ onClose, onUserAdded }) => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:5000/users', {
+        ...inputs,
         userName: String(inputs.userName),
         userPhone: String(inputs.userPhone),
         userGmail: String(inputs.userGmail),
         userPassword: String(inputs.userPassword),
         UserAgree: Boolean(inputs.UserAgree),
+        isActive: Boolean(inputs.isActive),
       });
 
-      // Reset inputs
+      // Reset form
       setInputs({
         userName: '',
         userPhone: '',
         userGmail: '',
         userPassword: '',
         UserAgree: false,
+        isActive: true,
       });
 
-      onUserAdded(); // refresh user list and show success
-      onClose(); // close popup
+      onUserAdded(); // refresh user list
+      onClose();     // close popup
     } catch (err) {
       console.error(err);
       alert('Failed to add user.');
@@ -100,12 +107,33 @@ const AddUser = ({ onClose, onUserAdded }) => {
               style={{ marginLeft: '5px' }}
             />
           </label>
-          <br /><br />
 
-          <button type="submit">Register User</button>
-          <button type="button" onClick={onClose} style={{ marginLeft: '10px' }}>
-            Cancel
-          </button>
+          <label>
+            Status:
+            <select
+              name="isActive"
+              value={inputs.isActive}
+              onChange={handleChange}
+              style={{ marginLeft: '5px' }}
+            >
+              <option value={true}>Active</option>
+              <option value={false}>Inactive</option>
+            </select>
+          </label>
+
+          <div style={{ marginTop: '15px' }}>
+            <button type="submit" className="updatebtn">
+              Register User
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              style={{ marginLeft: '10px' }}
+              className="deletebtn"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>

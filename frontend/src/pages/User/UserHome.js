@@ -30,22 +30,6 @@ const UserHome = () => {
     getUsers();
   }, []);
 
-  // Delete handler
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
-    if (confirmDelete) {
-      try {
-        await axios.delete(`http://localhost:5000/users/${id}`);
-        setUsers(prev => prev.filter(user => user._id !== id));
-        setSuccessMessage('User deleted successfully!');
-        setTimeout(() => setSuccessMessage(''), 3000);
-      } catch (err) {
-        console.error(err);
-        alert('Failed to delete user.');
-      }
-    }
-  };
-
   // Filter users by search term
   const filteredUsers = users.filter(user =>
     (user.userName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
@@ -60,7 +44,7 @@ const UserHome = () => {
       <h2 className='mh2'>Users Registration Details</h2>
       {successMessage && <div className="success-popup">{successMessage}</div>}
 
-      {/* Search box */}
+      {/* Search Box */}
       <div className="search-container">
         <input
           type="text"
@@ -78,25 +62,37 @@ const UserHome = () => {
             <th>Phone</th>
             <th>Email</th>
             <th>Agreed Terms</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {filteredUsers.length > 0 ? (
             filteredUsers.map((user, i) => (
-              <User
-                key={i}
-                user={user}
-                onUpdate={() => {
-                  setSelectedUser(user);
-                  setShowUpdatePopup(true);
-                }}
-                onDelete={() => handleDelete(user._id)}
-              />
+              <tr key={i}>
+                <td>{user.userName}</td>
+                <td>{user.userPhone}</td>
+                <td>{user.userGmail}</td>
+                <td>{user.UserAgree ? "Yes" : "No"}</td>
+                <td>{user.isActive ? "Active" : "Inactive"}</td>
+                <td>
+                  <div className="button-container">
+                    <button
+                      className="updatebtn"
+                      onClick={() => {
+                        setSelectedUser(user);
+                        setShowUpdatePopup(true);
+                      }}
+                    >
+                      Update
+                    </button>
+                  </div>
+                </td>
+              </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="5" style={{ textAlign: "center", padding: "15px" }}>
+              <td colSpan="6" style={{ textAlign: "center", padding: "15px" }}>
                 No users found
               </td>
             </tr>
