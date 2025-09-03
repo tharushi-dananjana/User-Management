@@ -73,7 +73,7 @@ const DoctorHome = () => {
     <div>
       <Nav />
 
-      <h2 className='mh2'>Doctors Registration Details</h2>
+      <h1 className='mh2'>Doctors Registration Details</h1>
       {successMessage && <div className="success-popup">{successMessage}</div>}
 
       {/* Search Box */}
