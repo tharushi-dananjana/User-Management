@@ -1,21 +1,41 @@
 const Doctor = require('../model/Doctor');
 
 // Get all doctors
-const getAllDoctors = async (req, res, next) => {
+const getAllDoctors = async (req, res) => {
   try {
     const doctors = await Doctor.find();
     return res.status(200).json({ doctors });
   } catch (err) {
-    console.error(err);
+    console.error("Error fetching doctors:", err);
     return res.status(500).json({ message: 'An error occurred while fetching doctors.' });
   }
 };
 
-// Add new doctor
-const addDoctor = async (req, res, next) => {
-  const { doctorName, doctorPhone, doctorEmail, doctorPassword, specialization, experienceYears, available } = req.body;
+// Add new doctor (with duplicate check)
+const addDoctor = async (req, res) => {
+  const {
+    doctorName,
+    doctorPhone,
+    doctorEmail,
+    doctorPassword,
+    specialization,
+    experienceYears,
+    available
+  } = req.body;
 
   try {
+    // ✅ Check if email or phone already exists
+    const existingDoctor = await Doctor.findOne({
+      $or: [{ doctorEmail }, { doctorPhone }]
+    });
+
+    if (existingDoctor) {
+      return res.status(400).json({
+        message: 'Doctor with this email or phone number already exists.'
+      });
+    }
+
+    // ✅ Create and save new doctor
     const doctor = new Doctor({
       doctorName,
       doctorPhone,
@@ -25,16 +45,18 @@ const addDoctor = async (req, res, next) => {
       experienceYears,
       available,
     });
+
     await doctor.save();
-    return res.status(201).json({ doctor });
+    return res.status(201).json({ message: 'Doctor added successfully.', doctor });
+
   } catch (err) {
-    console.error(err);
+    console.error("Error adding doctor:", err);
     return res.status(500).json({ message: 'An error occurred while adding a doctor.' });
   }
 };
 
 // Get doctor by ID
-const getDoctorById = async (req, res, next) => {
+const getDoctorById = async (req, res) => {
   const id = req.params.id.trim();
 
   if (!id || id.length !== 24) {
@@ -48,22 +70,44 @@ const getDoctorById = async (req, res, next) => {
     }
     return res.status(200).json({ doctor });
   } catch (err) {
-    console.error(err);
+    console.error("Error fetching doctor:", err);
     return res.status(500).json({ message: 'An error occurred while fetching the doctor.' });
   }
 };
 
 // Update doctor details
-const updateDoctor = async (req, res, next) => {
+const updateDoctor = async (req, res) => {
   const id = req.params.id.trim();
 
   if (!id || id.length !== 24) {
     return res.status(400).json({ message: 'Invalid doctor ID format.' });
   }
 
-  const { doctorName, doctorPhone, doctorEmail, doctorPassword, specialization, experienceYears, available } = req.body;
+  const {
+    doctorName,
+    doctorPhone,
+    doctorEmail,
+    doctorPassword,
+    specialization,
+    experienceYears,
+    available
+  } = req.body;
 
   try {
+    // ✅ Prevent duplicate email/phone when updating (except current doctor)
+    const duplicate = await Doctor.findOne({
+      $and: [
+        { _id: { $ne: id } },
+        { $or: [{ doctorEmail }, { doctorPhone }] }
+      ]
+    });
+
+    if (duplicate) {
+      return res.status(400).json({
+        message: 'Another doctor already uses this email or phone number.'
+      });
+    }
+
     const doctor = await Doctor.findByIdAndUpdate(
       id,
       {
@@ -81,15 +125,17 @@ const updateDoctor = async (req, res, next) => {
     if (!doctor) {
       return res.status(404).json({ message: 'Doctor not found.' });
     }
-    return res.status(200).json({ doctor });
+
+    return res.status(200).json({ message: 'Doctor updated successfully.', doctor });
+
   } catch (err) {
-    console.error(err);
+    console.error("Error updating doctor:", err);
     return res.status(500).json({ message: 'An error occurred while updating the doctor.' });
   }
 };
 
 // Delete doctor
-const deleteDoctor = async (req, res, next) => {
+const deleteDoctor = async (req, res) => {
   const id = req.params.id.trim();
 
   if (!id || id.length !== 24) {
@@ -103,7 +149,7 @@ const deleteDoctor = async (req, res, next) => {
     }
     return res.status(200).json({ message: 'Doctor successfully deleted.' });
   } catch (err) {
-    console.error(err);
+    console.error("Error deleting doctor:", err);
     return res.status(500).json({ message: 'An error occurred while deleting the doctor.' });
   }
 };

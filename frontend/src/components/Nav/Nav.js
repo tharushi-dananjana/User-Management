@@ -1,12 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Nav.css";
-import { BiHome, BiLogOut, BiUser, BiUserCircle } from "react-icons/bi";
+import { BiHome, BiLogOut, BiUser } from "react-icons/bi";
 import { FaUsers } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
 import profilePic from "./images/logo.png";
 
 const Sidebar = ({ onProfileClick }) => {
+  const navigate = useNavigate();
+
+  // ✅ Logout handler
+  const handleLogout = () => {
+    // Remove token if you stored it in localStorage
+    localStorage.removeItem("authToken");
+    alert("You have been logged out.");
+    navigate("/LoginH"); // ✅ Go back to login page
+  };
+
   return (
     <div className="sidebar">
       <h2 className="logo">Ayu Mantra</h2>
@@ -43,11 +53,12 @@ const Sidebar = ({ onProfileClick }) => {
           </Link>
         </li>
 
+        {/* ✅ Logout with onClick */}
         <li className="logout">
-          <Link to="/">
+          <button onClick={handleLogout} className="logout-btn">
             <BiLogOut className="icon" />
             Log Out
-          </Link>
+          </button>
         </li>
       </ul>
     </div>

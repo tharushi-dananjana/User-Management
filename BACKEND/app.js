@@ -7,7 +7,7 @@ const User = require('./model/User');
 const userRoutes = require('./routes/userRoutes'); // Updated import
 const doctorRoutes = require('./routes/doctorRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-const loginRoutes = require('./routes/loginRoutes');
+
 
 const app = express();
 const port = 5000;
@@ -28,7 +28,7 @@ mongoose.connect("mongodb+srv://it23688568:UR6FwT8ggNBM4pti@cluster0.ijo2aeo.mon
 app.use('/users', userRoutes); // Use the correct route file
 app.use('/doctors', doctorRoutes);//added doctor routes
 app.use('/admins', adminRoutes);
-app.use('/loginH', loginRoutes); // ✅ add login route
+
 
 // Start the server
 app.listen(port, () => {
