@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import './Reg.css';
-import '../../components/Nav/Nav'
 
 function UserHome() {
   const navigate = useNavigate();
@@ -14,7 +13,8 @@ function UserHome() {
     userPassword: '',
   });
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(false); // UserAgree
+  const [isActive, setIsActive] = useState(true); // default active
 
   // Handle input changes
   const handleChange = (e) => {
@@ -24,7 +24,7 @@ function UserHome() {
     }));
   };
 
-  // Send input details to database
+  // Send input details to backend
   const sendRequest = async () => {
     try {
       const res = await axios.post("http://localhost:5000/users", {
@@ -32,23 +32,29 @@ function UserHome() {
         userPhone: String(inputs.userPhone),
         userGmail: String(inputs.userGmail),
         userPassword: String(inputs.userPassword),
-        UserAgree: String(checked)
+        UserAgree: Boolean(checked),
+        isActive: Boolean(isActive)
       });
       return res.data;
     } catch (err) {
       console.error(err);
-      alert("Failed to register. Please try again.");
+      if (err.response && err.response.data?.message) {
+        alert(err.response.data.message); // show backend validation/duplicate errors
+      } else {
+        alert("Failed to register. Please try again.");
+      }
     }
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!checked) {
       alert("You must agree to the terms!");
       return;
     }
-    console.log(inputs, checked);
+
     await sendRequest();
     alert("Registered Successfully!");
     navigate('/adduserH'); // navigate to user dashboard or next page
@@ -57,7 +63,7 @@ function UserHome() {
   return (
     <div className='form-container'>
       <div className='form-wrapper'>
-        <h2>Create Account</h2>
+        <h2>Create User Account</h2>
         <p className='subtitle'>Welcome to Our Family! Please enter your details.</p>
 
         <form className="form" onSubmit={handleSubmit}>
@@ -81,7 +87,8 @@ function UserHome() {
               name="userPhone"
               value={inputs.userPhone}
               onChange={handleChange}
-              pattern="[0-9]{10}"
+              pattern="^0[0-9]{9}$"
+              title="Phone number must start with 0 and be 10 digits"
               required
             />
           </div>
@@ -118,6 +125,19 @@ function UserHome() {
               onChange={() => setChecked(!checked)}
             />
             <label htmlFor="UserAgree">I agree to the Terms & Conditions</label>
+          </div>
+
+          {/* Optional: Set Active/Inactive */}
+          <div className="form-group">
+            <label htmlFor="isActive">Status:</label>
+            <select
+              id="isActive"
+              value={isActive}
+              onChange={(e) => setIsActive(e.target.value === 'true')}
+            >
+              <option value={true}>Active</option>
+              <option value={false}>Inactive</option>
+            </select>
           </div>
 
           <button type="submit" className="submit-btn">Register</button>
