@@ -24,7 +24,6 @@ const addDoctor = async (req, res) => {
   } = req.body;
 
   try {
-    // ✅ Check if email or phone already exists
     const existingDoctor = await Doctor.findOne({
       $or: [{ doctorEmail }, { doctorPhone }]
     });
@@ -35,7 +34,6 @@ const addDoctor = async (req, res) => {
       });
     }
 
-    // ✅ Create and save new doctor
     const doctor = new Doctor({
       doctorName,
       doctorPhone,
@@ -58,16 +56,11 @@ const addDoctor = async (req, res) => {
 // Get doctor by ID
 const getDoctorById = async (req, res) => {
   const id = req.params.id.trim();
-
-  if (!id || id.length !== 24) {
-    return res.status(400).json({ message: 'Invalid doctor ID format.' });
-  }
+  if (!id || id.length !== 24) return res.status(400).json({ message: 'Invalid doctor ID format.' });
 
   try {
     const doctor = await Doctor.findById(id);
-    if (!doctor) {
-      return res.status(404).json({ message: 'Doctor not found.' });
-    }
+    if (!doctor) return res.status(404).json({ message: 'Doctor not found.' });
     return res.status(200).json({ doctor });
   } catch (err) {
     console.error("Error fetching doctor:", err);
@@ -75,13 +68,10 @@ const getDoctorById = async (req, res) => {
   }
 };
 
-// Update doctor details
+// Update doctor
 const updateDoctor = async (req, res) => {
   const id = req.params.id.trim();
-
-  if (!id || id.length !== 24) {
-    return res.status(400).json({ message: 'Invalid doctor ID format.' });
-  }
+  if (!id || id.length !== 24) return res.status(400).json({ message: 'Invalid doctor ID format.' });
 
   const {
     doctorName,
@@ -94,7 +84,6 @@ const updateDoctor = async (req, res) => {
   } = req.body;
 
   try {
-    // ✅ Prevent duplicate email/phone when updating (except current doctor)
     const duplicate = await Doctor.findOne({
       $and: [
         { _id: { $ne: id } },
@@ -122,12 +111,9 @@ const updateDoctor = async (req, res) => {
       { new: true }
     );
 
-    if (!doctor) {
-      return res.status(404).json({ message: 'Doctor not found.' });
-    }
+    if (!doctor) return res.status(404).json({ message: 'Doctor not found.' });
 
     return res.status(200).json({ message: 'Doctor updated successfully.', doctor });
-
   } catch (err) {
     console.error("Error updating doctor:", err);
     return res.status(500).json({ message: 'An error occurred while updating the doctor.' });
@@ -137,20 +123,29 @@ const updateDoctor = async (req, res) => {
 // Delete doctor
 const deleteDoctor = async (req, res) => {
   const id = req.params.id.trim();
-
-  if (!id || id.length !== 24) {
-    return res.status(400).json({ message: 'Invalid doctor ID format.' });
-  }
+  if (!id || id.length !== 24) return res.status(400).json({ message: 'Invalid doctor ID format.' });
 
   try {
     const doctor = await Doctor.findByIdAndDelete(id);
-    if (!doctor) {
-      return res.status(404).json({ message: 'Doctor not found.' });
-    }
+    if (!doctor) return res.status(404).json({ message: 'Doctor not found.' });
     return res.status(200).json({ message: 'Doctor successfully deleted.' });
   } catch (err) {
     console.error("Error deleting doctor:", err);
     return res.status(500).json({ message: 'An error occurred while deleting the doctor.' });
+  }
+};
+
+// Doctor Login
+const doctorLogin = async (req, res) => {
+  try {
+    const { doctorEmail, doctorPassword } = req.body;
+    const doctor = await Doctor.findOne({ doctorEmail, doctorPassword });
+    if (!doctor) return res.status(401).json({ message: "Invalid credentials" });
+
+    return res.status(200).json({ doctor });
+  } catch (err) {
+    console.error("Login error:", err);
+    return res.status(500).json({ message: "Server error during login." });
   }
 };
 
@@ -160,4 +155,5 @@ module.exports = {
   getDoctorById,
   updateDoctor,
   deleteDoctor,
+  doctorLogin
 };

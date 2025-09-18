@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import './AdminProfile.css';
+import "./AdminProfile.css";
 
 const AdminProfile = () => {
   const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({
-    adminName: "",
+    firstName: "",
+    lastName: "",
+    nic: "",
     adminPhone: "",
     adminEmail: "",
   });
@@ -21,7 +23,9 @@ const AdminProfile = () => {
         const res = await axios.get(`http://localhost:5000/admins/${adminId}`);
         setAdmin(res.data.admin);
         setForm({
-          adminName: res.data.admin.adminName,
+          firstName: res.data.admin.firstName,
+          lastName: res.data.admin.lastName,
+          nic: res.data.admin.nic,
           adminPhone: res.data.admin.adminPhone,
           adminEmail: res.data.admin.adminEmail,
         });
@@ -61,7 +65,9 @@ const AdminProfile = () => {
 
       {!editing ? (
         <div className="profile-view">
-          <p><strong>Name:</strong> {admin.adminName}</p>
+          <p><strong>First Name:</strong> {admin.firstName}</p>
+          <p><strong>Last Name:</strong> {admin.lastName}</p>
+          <p><strong>NIC:</strong> {admin.nic}</p>
           <p><strong>Phone:</strong> {admin.adminPhone}</p>
           <p><strong>Email:</strong> {admin.adminEmail}</p>
 
@@ -69,11 +75,29 @@ const AdminProfile = () => {
         </div>
       ) : (
         <form onSubmit={handleUpdate} className="profile-edit-form">
-          <label>Name:</label>
+          <label>First Name:</label>
           <input
             type="text"
-            name="adminName"
-            value={form.adminName}
+            name="firstName"
+            value={form.firstName}
+            onChange={handleChange}
+            required
+          />
+
+          <label>Last Name:</label>
+          <input
+            type="text"
+            name="lastName"
+            value={form.lastName}
+            onChange={handleChange}
+            required
+          />
+
+          <label>NIC:</label>
+          <input
+            type="text"
+            name="nic"
+            value={form.nic}
             onChange={handleChange}
             required
           />

@@ -8,49 +8,40 @@ export default function Login() {
   const [userGmail, setUserGmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ Hardcoded Admin Credentials Check
-    if (
-      userGmail === "admin.dilshan@example.com" &&
-      userPassword === "DilshanAdmin321"
-    ) {
+    // ✅ Admin login (hardcoded)
+    if (userGmail === "admin@gmail.com" && userPassword === "admin123") {
       alert("Admin Login Successful!");
-      navigate("/adminHome"); // ✅ Directly go to Admin Dashboard
+      navigate("/adminHome");
       return;
     }
 
-    // ✅ Fallback to backend login (for other users if needed)
+    // ✅ Doctor login
     try {
-      const response = await axios.post("http://localhost:5000/loginH", {
-        email: userGmail,
-        password: userPassword,
+      const response = await axios.post("http://localhost:5000/doctors/login", {
+        doctorEmail: userGmail,
+        doctorPassword: userPassword,
       });
 
       if (response.status === 200) {
-        const { role, token } = response.data;
+        const doctor = response.data.doctor;
 
-        // Store token for protected routes
-        localStorage.setItem("authToken", token);
+        // Save doctor info
+        localStorage.setItem("doctorId", doctor._id);
+        localStorage.setItem("doctorName", doctor.doctorName);
 
-        if (role === "admin") {
-          alert("Admin Login Successful!");
-          navigate("/adminHome");
-        } else {
-          setErrorMessage("Only admins can log in here.");
-        }
+        alert(`Welcome Dr. ${doctor.doctorName}`);
+        navigate(`/doctorprofile/${doctor._id}`); // ✅ navigate with ID
       } else {
         setErrorMessage("Invalid email or password.");
       }
     } catch (error) {
       console.error("Login error:", error);
-      setErrorMessage(
-        error.response?.data?.message || "An error occurred during login."
-      );
+      setErrorMessage(error.response?.data?.message || "Email or password is incorrect.");
     }
   };
 

@@ -10,6 +10,7 @@ import AddUserD from "./pages/Doctor/DaddUser";
 import Regs from "./pages/Reg/Regs";
 import Login from "./pages/Login/Login";
 import AdminProfile from "./pages/Admin/AdminProfile";
+import DoctorProfile from "./pages/DoctorDash/DoctorProfile";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Route path="/reg" element={<Regs />} />
       <Route path="/loginH" element={<Login />} />
       <Route path="/admin/profile" element={<AdminProfile />} />
+      <Route path="/doctorprofile/:id" element={<DoctorProfile />} />
     </Routes>
   );
 }

@@ -13,9 +13,9 @@ const getAllAdmins = async (req, res) => {
 
 // Add new admin
 const addAdmin = async (req, res) => {
-  const { adminName, adminEmail, adminPhone, adminPassword } = req.body;
+  const { firstName, lastName, nic, adminEmail, adminPhone, adminPassword } = req.body;
   try {
-    const admin = new Admin({ adminName, adminEmail, adminPhone, adminPassword });
+    const admin = new Admin({ firstName, lastName, nic, adminEmail, adminPhone, adminPassword });
     await admin.save();
     return res.status(201).json({ admin });
   } catch (err) {
@@ -42,14 +42,14 @@ const getAdminById = async (req, res) => {
 // Update admin
 const updateAdmin = async (req, res) => {
   const id = req.params.id?.trim();
-  const { adminName, adminEmail, adminPhone, adminPassword } = req.body;
+  const { firstName, lastName, nic, adminEmail, adminPhone, adminPassword } = req.body;
 
   if (!id || id.length !== 24) return res.status(400).json({ message: 'Invalid admin ID.' });
 
   try {
     const admin = await Admin.findByIdAndUpdate(
       id,
-      { adminName, adminEmail, adminPhone, adminPassword },
+      { firstName, lastName, nic, adminEmail, adminPhone, adminPassword },
       { new: true }
     ).select('-adminPassword');
 
@@ -75,7 +75,6 @@ const deleteAdmin = async (req, res) => {
     return res.status(500).json({ message: 'An error occurred while deleting the admin.' });
   }
 };
-
 
 module.exports = {
   getAllAdmins,

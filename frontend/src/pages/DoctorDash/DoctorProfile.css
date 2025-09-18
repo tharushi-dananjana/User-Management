@@ -1,0 +1,11 @@
+.doctor-profile-card {
+  background-color: aliceblue;
+  box-shadow: 60px;
+  border-radius: 8px;
+  width: 600px;
+  height: 600px;
+    padding: 50px; 
+  margin-top: 15px;
+  margin-right: 95px; 
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
