@@ -16,14 +16,14 @@ body {
 
 /* Search bar */
 .search-container {
-  width: 90%;
-  margin: 0 auto 15px auto;
+  width: 80%;
+  margin-left: 30px;
   text-align: left;
 }
 
 .search-input {
   padding: 6px 10px;
-  width: 200px;
+  width: 150px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 13px;
