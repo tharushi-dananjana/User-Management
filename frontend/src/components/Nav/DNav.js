@@ -20,6 +20,7 @@ const Sidebar = () => {
   };
 
   return (
+    
     <div className="sidebar">
       {/* Logo */}
       <h2 className="logo">Ayu Mantra</h2>
