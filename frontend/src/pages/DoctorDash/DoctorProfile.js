@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "../../components/Nav/DNav";
+import Sidebar from "../../components/Nav/DocNav/DNav";
 import "./DoctorProfile.css";
 
 const DoctorProfile = () => {

@@ -25,7 +25,9 @@ const addManager = async (req, res) => {
       category, // ✅ include category
     });
     await manager.save();
-    return res.status(201).json({ manager });
+    const managerData = manager.toObject();
+    delete managerData.managerPassword; // remove password before sending
+    return res.status(201).json({ manager: managerData });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: 'An error occurred while adding an inventory manager.' });
@@ -57,7 +59,7 @@ const updateManager = async (req, res) => {
   try {
     const manager = await InventoryManager.findByIdAndUpdate(
       id,
-      { firstName, lastName, nic, managerEmail, managerPhone, managerPassword, category }, // ✅ include category
+      { firstName, lastName, nic, managerEmail, managerPhone, managerPassword, category },
       { new: true }
     ).select('-managerPassword');
 
@@ -84,10 +86,34 @@ const deleteManager = async (req, res) => {
   }
 };
 
+// ✅ Inventory Manager Login
+const loginManager = async (req, res) => {
+  const { managerEmail, managerPassword } = req.body;
+
+  if (!managerEmail || !managerPassword) {
+    return res.status(400).json({ message: "Email and password are required." });
+  }
+
+  try {
+    const manager = await InventoryManager.findOne({ managerEmail, managerPassword });
+    if (!manager) {
+      return res.status(401).json({ message: "Invalid email or password." });
+    }
+
+    const managerData = manager.toObject();
+    delete managerData.managerPassword; // remove password before sending
+    return res.status(200).json({ manager: managerData });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error while logging in." });
+  }
+};
+
 module.exports = {
   getAllManagers,
   addManager,
   getManagerById,
   updateManager,
   deleteManager,
+  loginManager, // ✅ added login
 };

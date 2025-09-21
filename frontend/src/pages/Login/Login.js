@@ -29,15 +29,30 @@ export default function Login() {
 
       if (response.status === 200) {
         const doctor = response.data.doctor;
-
-        // Save doctor info
         localStorage.setItem("doctorId", doctor._id);
         localStorage.setItem("doctorName", doctor.doctorName);
-
         alert(`Welcome Dr. ${doctor.doctorName}`);
-        navigate(`/doctorprofile/${doctor._id}`); // ✅ navigate with ID
-      } else {
-        setErrorMessage("Invalid email or password.");
+        navigate(`/doctorprofile/${doctor._id}`);
+        return;
+      }
+    } catch (err) {
+      // Ignore error and try Inventory Manager login next
+    }
+
+    // ✅ Inventory Manager login
+    try {
+      const res = await axios.post("http://localhost:5000/inventory-managers/login", {
+        managerEmail: userGmail,
+        managerPassword: userPassword,
+      });
+
+      if (res.status === 200) {
+        const manager = res.data.manager;
+        localStorage.setItem("managerId", manager._id);
+        localStorage.setItem("managerName", `${manager.firstName} ${manager.lastName}`);
+        alert(`Welcome ${manager.firstName} ${manager.lastName}`);
+        navigate(`/improfile/${manager._id}`);
+        return;
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -58,17 +73,15 @@ export default function Login() {
           <div className="ful">
             <div className="row">
               <div className="column">
-                <h2 className="r-h1">Admin Login</h2>
+                <h2 className="r-h1">Login</h2>
                 <br />
                 <h4 className="r-subheading">
-                  Please log in with your admin credentials.
+                  Please log in with your credentials.
                 </h4>
-                <br />
-                <br />
                 <br />
                 <form onSubmit={handleSubmit}>
                   <label className="fmhd" htmlFor="userGmail">
-                    Admin Email:
+                    Email:
                   </label>
                   <br />
                   <input
@@ -96,6 +109,7 @@ export default function Login() {
                   />
                   <br />
                   <br />
+
                   <div className="rgbtn">
                     <button type="submit" className="regbtn">
                       Login

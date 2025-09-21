@@ -1,0 +1,80 @@
+.im-sidebar {
+  width: 220px;
+  background-color: #4a90e2;
+  height: 100vh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.im-logo {
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.im-profile-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.im-profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.im-profile-name {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.im-nav-links {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.im-nav-links li {
+  width: 100%;
+}
+
+.im-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+.im-nav-link:hover {
+  background-color: #357ab8;
+}
+
+.im-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  margin-top: 20px;
+  background-color: #ff4d4f;
+  border: none;
+  width: 100%;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.im-logout-btn:hover {
+  background-color: #e53935;
+}
+
+.icon {
+  font-size: 18px;
+}

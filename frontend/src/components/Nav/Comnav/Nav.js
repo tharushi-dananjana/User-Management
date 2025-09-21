@@ -4,7 +4,7 @@ import "./Nav.css";
 import { BiHome, BiLogOut, BiUser } from "react-icons/bi";
 import { FaUsers } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
-import profilePic from "./images/logo.png";
+import profilePic from "../images/logo.png";
 
 const Sidebar = ({ onProfileClick }) => {
   const navigate = useNavigate();

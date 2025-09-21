@@ -11,6 +11,7 @@ import Regs from "./pages/Reg/Regs";
 import Login from "./pages/Login/Login";
 import AdminProfile from "./pages/Admin/AdminProfile";
 import DoctorProfile from "./pages/DoctorDash/DoctorProfile";
+import IMProfile from "./pages/Profile/imProfile";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <Route path="/loginH" element={<Login />} />
       <Route path="/admin/profile" element={<AdminProfile />} />
       <Route path="/doctorprofile/:id" element={<DoctorProfile />} />
+      <Route path="/improfile/:id" element={<IMProfile />} />
     </Routes>
   );
 }
