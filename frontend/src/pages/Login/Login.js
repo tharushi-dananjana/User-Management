@@ -36,7 +36,7 @@ export default function Login() {
         return;
       }
     } catch (err) {
-      // Ignore error and try Inventory Manager login next
+      // Ignore error and try next login
     }
 
     // ✅ Inventory Manager login
@@ -54,9 +54,28 @@ export default function Login() {
         navigate(`/improfile/${manager._id}`);
         return;
       }
-    } catch (error) {
-      console.error("Login error:", error);
-      setErrorMessage(error.response?.data?.message || "Email or password is incorrect.");
+    } catch (err) {
+      // Ignore error and try next login
+    }
+
+    // ✅ Project Manager login
+    try {
+      const pmRes = await axios.post("http://localhost:5000/project-managers/login", {
+        managerEmail: userGmail,
+        managerPassword: userPassword,
+      });
+
+      if (pmRes.status === 200) {
+        const pm = pmRes.data.manager;
+        localStorage.setItem("pmId", pm._id);
+        localStorage.setItem("pmName", `${pm.firstName} ${pm.lastName}`);
+        alert(`Welcome Project Manager ${pm.firstName} ${pm.lastName}`);
+        navigate(`/pmprofile/${pm._id}`);
+        return;
+      }
+    } catch (err) {
+      console.error("PM Login error:", err);
+      setErrorMessage(err.response?.data?.message || "Email or password is incorrect.");
     }
   };
 

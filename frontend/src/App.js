@@ -12,6 +12,7 @@ import Login from "./pages/Login/Login";
 import AdminProfile from "./pages/Admin/AdminProfile";
 import DoctorProfile from "./pages/DoctorDash/DoctorProfile";
 import IMProfile from "./pages/Profile/imProfile";
+import PMProfile from "./pages/Profile/PMProfile";
 
 function App() {
   return (
@@ -27,7 +28,9 @@ function App() {
       <Route path="/admin/profile" element={<AdminProfile />} />
       <Route path="/doctorprofile/:id" element={<DoctorProfile />} />
       <Route path="/improfile/:id" element={<IMProfile />} />
+      <Route path="/pmprofile/:id" element={<PMProfile />} />
     </Routes>
+
   );
 }
 
