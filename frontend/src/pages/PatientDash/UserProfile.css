@@ -45,6 +45,17 @@ body {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
+.profile-header h1 {
+  font-size: 1.5rem;
+  color: #555;
+  margin-bottom: 0.3rem;
+}
+
+.profile-header h2 {
+  font-size: 2rem;
+  color: #2980b9;
+}
+
 /* Header buttons */
 .header-actions {
   display: flex;
@@ -85,7 +96,6 @@ body {
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  overflow: hidden;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
@@ -125,28 +135,28 @@ body {
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
   font-size: 0.85rem;
+  transition: all 0.3s ease;
 }
 
 .edit-btn:hover {
   background: linear-gradient(135deg, #2980b9, #1c5980);
 }
 
-/* Small Logout button next to Edit Profile */
-.small-logout-btn {
+/* Logout button same size as Edit */
+.logout-btn {
   background: linear-gradient(135deg, #e74c3c, #c0392b);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
+  font-size: 0.85rem;
   transition: all 0.3s ease;
-  font-size: 0.8rem;
 }
 
-.small-logout-btn:hover {
+.logout-btn:hover {
   background: linear-gradient(135deg, #c0392b, #992d22);
 }
 
@@ -179,18 +189,6 @@ body {
 
 .profile-edit-form button[type="button"]:hover {
   background: linear-gradient(135deg, #7f8c8d, #626d70);
-}
-
-/* Scrollbar styling */
-.profile-view::-webkit-scrollbar,
-.profile-edit-form::-webkit-scrollbar {
-  width: 6px;
-}
-
-.profile-view::-webkit-scrollbar-thumb,
-.profile-edit-form::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.2);
-  border-radius: 3px;
 }
 
 /* Responsive */

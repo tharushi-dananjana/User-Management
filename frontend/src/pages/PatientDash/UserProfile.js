@@ -71,7 +71,7 @@ const UserProfile = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("authToken");
     alert("You have been logged out.");
-    navigate("/login");
+    navigate("/LoginH"); // navigate to Login page
   };
 
   if (loading) return <p>Loading user profile...</p>;
@@ -81,22 +81,20 @@ const UserProfile = () => {
     <div className="user-page-container">
       <div className="user-profile-content">
         <div className="profile-header">
-          <h1>User Profile</h1>
+          <div>
+            <h1>Welcome to</h1>
+            <h2>{user.userName}</h2>
+          </div>
           <div className="header-actions">
-            {/* Home Button */}
             <button className="home-btn" onClick={() => navigate("/userHome")}>
               Home
             </button>
-
-            {/* My Appointments Button */}
             <button
               className="appointments-btn"
               onClick={() => navigate("/user/appointments")}
             >
               My Appointments
             </button>
-
-            {/* Notification Icon */}
             <FaBell className="notification-bell" title="Notifications" />
           </div>
         </div>
@@ -111,8 +109,12 @@ const UserProfile = () => {
             <p><strong>Status:</strong> {user.isActive ? "Active" : "Deactivated"}</p>
 
             <div className="profile-buttons">
-              <button onClick={() => setEditing(true)}>Edit Profile</button>
-              <button className="logout-btn" onClick={handleLogout}>Logout</button>
+              <button className="edit-btn" onClick={() => setEditing(true)}>
+                Edit Profile
+              </button>
+              <button className="logout-btn" onClick={handleLogout}>
+                Logout
+              </button>
             </div>
           </div>
         ) : (
