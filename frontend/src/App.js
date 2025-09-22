@@ -35,7 +35,7 @@ function App() {
       <Route path="/supplierHome" element={<SupplierHome />} />
       <Route path="/updatesupplier/:id" element={<UpdateSupplier />} />
       <Route path="/addsupplier" element={<AddSupplier />} />
-      <Route path="/userprofie/:id" element={<UserProfile />} />
+      <Route path="/userprofile" element={<UserProfile />} />
     </Routes>
   );
 }

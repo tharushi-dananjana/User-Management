@@ -9,18 +9,39 @@ export default function Login() {
   const [userGmail, setUserGmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [showRegisterPopup, setShowRegisterPopup] = useState(false); // ✅ popup state
+  const [showRegisterPopup, setShowRegisterPopup] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setErrorMessage(""); // clear previous error
+
     // ✅ Admin login
     if (userGmail === "admin@gmail.com" && userPassword === "admin123") {
       alert("Admin Login Successful!");
       navigate("/adminHome");
       return;
+    }
+
+    // ✅ USER LOGIN
+    try {
+      const userRes = await axios.post("http://localhost:5000/users/login", {
+        userGmail,
+        userPassword,
+      });
+
+      if (userRes.status === 200) {
+        const user = userRes.data.user;
+        localStorage.setItem("userId", user._id);
+        localStorage.setItem("userName", user.userName);
+        alert(`Welcome ${user.userName}`);
+        navigate("/userprofile"); // ✅ Redirect to User Profile
+        return;
+      }
+    } catch (err) {
+      console.log("User login failed, trying next role...");
     }
 
     // ✅ Doctor login
@@ -53,10 +74,7 @@ export default function Login() {
       if (res.status === 200) {
         const manager = res.data.manager;
         localStorage.setItem("managerId", manager._id);
-        localStorage.setItem(
-          "managerName",
-          `${manager.firstName} ${manager.lastName}`
-        );
+        localStorage.setItem("managerName", `${manager.firstName} ${manager.lastName}`);
         alert(`Welcome ${manager.firstName} ${manager.lastName}`);
         navigate(`/improfile/${manager._id}`);
         return;
