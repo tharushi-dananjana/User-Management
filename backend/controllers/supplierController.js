@@ -23,7 +23,7 @@ const addSupplier = async (req, res) => {
       supplierName: supplierName.trim(),
       supplierPhone: supplierPhone.trim(),
       supplierEmail: supplierEmail.trim(),
-      supplierPassword, // plain password
+      supplierPassword,
       companyName: companyName.trim(),
       address: address.trim(),
       supplyCategory,
@@ -101,13 +101,19 @@ const deleteSupplier = async (req, res) => {
   }
 };
 
-// Supplier login
+// ✅ Supplier login
 const supplierLogin = async (req, res) => {
   const { supplierEmail, supplierPassword } = req.body;
 
   try {
-    const supplier = await Supplier.findOne({ supplierEmail: supplierEmail.trim(), supplierPassword });
-    if (!supplier) return res.status(401).json({ message: 'Invalid credentials' });
+    // Trim email for safety
+    const supplier = await Supplier.findOne({ supplierEmail: supplierEmail.trim() });
+
+    if (!supplier) return res.status(401).json({ message: 'Invalid email or password' });
+
+    if (supplier.supplierPassword !== supplierPassword) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
 
     return res.status(200).json({ message: 'Login successful', supplier });
   } catch (err) {

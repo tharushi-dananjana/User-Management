@@ -15,12 +15,16 @@ const AddSupplier = ({ onClose, onSupplierAdded }) => {
   });
 
   const categories = [
-    "Electronics",
-    "Groceries",
-    "Clothing",
-    "Pharmacy",
-    "Stationery",
-    "Hardware",
+    "Cosmetics & Personal care",
+    "Skin Care",
+    "Hair Care",
+    "Dental Care",
+    "Medicines",
+    "Herbal Products",
+    "Food & Beverages",
+    "Supplements",
+    "Medicines",
+    "Household Products",
   ];
 
   const handleChange = (e) => {

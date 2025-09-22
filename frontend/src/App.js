@@ -14,6 +14,7 @@ import Login from "./pages/Login/Login";
 import IMProfile from "./pages/Profile/imProfile";
 import PMProfile from "./pages/Profile/PMProfile";
 import SupplierHome from "./pages/Supplier/SupplierHome";
+import SupplierProfile from "./pages/Supplier/SupplierProfile";
 import UpdateSupplier from "./pages/Supplier/UpdateSupplier";
 import AddSupplier from "./pages/Supplier/AddSupplier";
 import UserProfile from "./pages/PatientDash/UserProfile";
@@ -33,6 +34,7 @@ function App() {
       <Route path="/improfile/:id" element={<IMProfile />} />
       <Route path="/pmprofile/:id" element={<PMProfile />} />
       <Route path="/supplierHome" element={<SupplierHome />} />
+      <Route path="/supplierprofile" element={<SupplierProfile />} />
       <Route path="/updatesupplier/:id" element={<UpdateSupplier />} />
       <Route path="/addsupplier" element={<AddSupplier />} />
       <Route path="/userprofile" element={<UserProfile />} />

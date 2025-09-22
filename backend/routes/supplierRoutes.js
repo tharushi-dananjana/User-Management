@@ -7,6 +7,8 @@ router.post('/', supplierController.addSupplier);
 router.get('/:id', supplierController.getSupplierById);
 router.put('/:id', supplierController.updateSupplier);
 router.delete('/:id', supplierController.deleteSupplier);
+
+// ✅ Supplier login route
 router.post('/login', supplierController.supplierLogin);
 
 module.exports = router;

@@ -1,115 +1,208 @@
+/* Reset and global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Container */
 .user-page-container {
   display: flex;
-  min-height: 100vh;
-  background-color: #f5f5f5;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
 }
 
+/* Profile content */
 .user-profile-content {
-  flex: 1;
-  padding: 40px;
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 900px;
+  animation: fadeIn 0.6s ease-in;
 }
 
+/* Fade in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Profile header */
 .profile-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
+  padding: 1.75rem 2.5rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
+/* Header buttons */
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 1rem;
 }
 
-.appointments-btn {
-  background-color: #007bff;
+.header-actions .home-btn,
+.header-actions .appointments-btn {
+  background: linear-gradient(135deg, #8e44ad, #71368a);
   color: white;
   border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
 }
 
-.appointments-btn:hover {
-  background-color: #0056b3;
+.header-actions .home-btn:hover,
+.header-actions .appointments-btn:hover {
+  background: linear-gradient(135deg, #71368a, #5e2a6a);
 }
 
+/* Notification bell */
 .notification-bell {
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #555;
   cursor: pointer;
-  transition: color 0.3s;
 }
 
-.notification-bell:hover {
-  color: #007bff;
-}
-
-.profile-view p {
-  margin: 8px 0;
-  font-size: 16px;
-}
-
-.profile-view button {
-  margin-top: 20px;
-  padding: 8px 16px;
-  font-size: 15px;
-  border: none;
-  border-radius: 6px;
-  background-color: #007bff;
-  color: #fff;
-  cursor: pointer;
-}
-
-.profile-view button:hover {
-  background-color: #0056b3;
-}
-
+/* Profile card */
+.profile-view,
 .profile-edit-form {
-  display: flex;
-  flex-direction: column;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
+/* Labels and inputs */
 .profile-edit-form label {
-  margin: 10px 0 5px;
-  font-weight: bold;
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #333;
 }
 
-.profile-edit-form input[type="text"],
-.profile-edit-form input[type="email"] {
-  padding: 8px;
-  border-radius: 6px;
+.profile-edit-form input,
+.profile-edit-form select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  margin-top: 0.3rem;
+  border-radius: 8px;
   border: 1px solid #ccc;
+  font-size: 0.9rem;
 }
 
-.profile-edit-form input[type="checkbox"] {
-  margin-left: 10px;
-  transform: scale(1.2);
+/* Profile buttons container */
+.profile-buttons {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
 }
 
-.profile-edit-form button {
-  margin-top: 20px;
-  padding: 8px 16px;
+/* Edit Profile button */
+.edit-btn {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
   border: none;
-  border-radius: 6px;
-  background-color: #28a745;
-  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+}
+
+.edit-btn:hover {
+  background: linear-gradient(135deg, #2980b9, #1c5980);
+}
+
+/* Small Logout button next to Edit Profile */
+.small-logout-btn {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.small-logout-btn:hover {
+  background: linear-gradient(135deg, #c0392b, #992d22);
+}
+
+/* Save/Cancel buttons */
+.profile-edit-form button {
+  margin-top: 1.2rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.profile-edit-form button[type="submit"] {
+  background: linear-gradient(135deg, #27ae60, #1e8449);
+  color: white;
+  margin-right: 0.5rem;
+}
+
+.profile-edit-form button[type="submit"]:hover {
+  background: linear-gradient(135deg, #1e8449, #145a32);
 }
 
 .profile-edit-form button[type="button"] {
-  background-color: #dc3545;
-  margin-left: 10px;
+  background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+  color: white;
 }
 
-.profile-edit-form button:hover {
-  opacity: 0.9;
+.profile-edit-form button[type="button"]:hover {
+  background: linear-gradient(135deg, #7f8c8d, #626d70);
+}
+
+/* Scrollbar styling */
+.profile-view::-webkit-scrollbar,
+.profile-edit-form::-webkit-scrollbar {
+  width: 6px;
+}
+
+.profile-view::-webkit-scrollbar-thumb,
+.profile-edit-form::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .header-actions {
+    justify-content: center;
+  }
+  .profile-buttons {
+    flex-direction: column;
+  }
 }

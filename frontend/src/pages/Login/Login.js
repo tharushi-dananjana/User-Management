@@ -44,6 +44,24 @@ export default function Login() {
       console.log("User login failed, trying next role...");
     }
 
+    // Supplier login
+try {
+  const supplierRes = await axios.post("http://localhost:5000/suppliers/login", {
+    supplierEmail: userGmail,
+    supplierPassword: userPassword,
+  });
+
+  if (supplierRes.status === 200) {
+    const supplier = supplierRes.data.supplier;
+    localStorage.setItem("supplierId", supplier._id);
+    localStorage.setItem("supplierName", supplier.supplierName);
+    alert(`Welcome ${supplier.supplierName}`);
+    navigate("/supplierprofile"); // redirect to SupplierProfile page
+    return;
+  }
+} catch {}
+
+
     // ✅ Doctor login
     try {
       const response = await axios.post("http://localhost:5000/doctors/login", {

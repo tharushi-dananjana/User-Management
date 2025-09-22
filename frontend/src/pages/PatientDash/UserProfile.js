@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaBell } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-// import Sidebar from "../../components/Nav/UserNav/UNav";
 import "./UserProfile.css";
 
 const UserProfile = () => {
@@ -68,22 +67,36 @@ const UserProfile = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("authToken");
+    alert("You have been logged out.");
+    navigate("/login");
+  };
+
   if (loading) return <p>Loading user profile...</p>;
   if (!user) return <p>No user found.</p>;
 
   return (
     <div className="user-page-container">
-      {/* <Sidebar /> */}
       <div className="user-profile-content">
         <div className="profile-header">
           <h1>User Profile</h1>
           <div className="header-actions">
+            {/* Home Button */}
+            <button className="home-btn" onClick={() => navigate("/userHome")}>
+              Home
+            </button>
+
+            {/* My Appointments Button */}
             <button
               className="appointments-btn"
               onClick={() => navigate("/user/appointments")}
             >
               My Appointments
             </button>
+
+            {/* Notification Icon */}
             <FaBell className="notification-bell" title="Notifications" />
           </div>
         </div>
@@ -96,26 +109,36 @@ const UserProfile = () => {
             <p><strong>Password:</strong> {user.userPassword}</p>
             <p><strong>Agreement:</strong> {user.UserAgree ? "Accepted" : "Not Accepted"}</p>
             <p><strong>Status:</strong> {user.isActive ? "Active" : "Deactivated"}</p>
-            <button onClick={() => setEditing(true)}>Edit Profile</button>
+
+            <div className="profile-buttons">
+              <button onClick={() => setEditing(true)}>Edit Profile</button>
+              <button className="logout-btn" onClick={handleLogout}>Logout</button>
+            </div>
           </div>
         ) : (
           <form onSubmit={handleUpdate} className="profile-edit-form">
             <label>Name:</label>
             <input name="userName" value={form.userName} onChange={handleChange} required />
+
             <label>Phone:</label>
             <input name="userPhone" value={form.userPhone} onChange={handleChange} required />
+
             <label>Email:</label>
             <input name="userGmail" type="email" value={form.userGmail} onChange={handleChange} required />
+
             <label>Password:</label>
             <input name="userPassword" type="text" value={form.userPassword} onChange={handleChange} required />
+
             <label>
               Accept Terms:
               <input type="checkbox" name="UserAgree" checked={form.UserAgree} onChange={handleChange} />
             </label>
+
             <label>
               Active:
               <input type="checkbox" name="isActive" checked={form.isActive} onChange={handleChange} />
             </label>
+
             <button type="submit">Save Changes</button>
             <button type="button" onClick={() => setEditing(false)}>Cancel</button>
           </form>
