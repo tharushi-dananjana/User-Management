@@ -10,13 +10,13 @@ import DupdateUser from "./pages/Doctor/DupdateUser";
 import AddUserD from "./pages/Doctor/DaddUser";
 import UserHome from "./pages/User/UserHome";
 import UpdateUser from "./pages/User/UpdateUser";
-import Regs from "./pages/Reg/Regs";
 import Login from "./pages/Login/Login";
 import IMProfile from "./pages/Profile/imProfile";
 import PMProfile from "./pages/Profile/PMProfile";
 import SupplierHome from "./pages/Supplier/SupplierHome";
 import UpdateSupplier from "./pages/Supplier/UpdateSupplier";
 import AddSupplier from "./pages/Supplier/AddSupplier";
+import UserProfile from "./pages/PatientDash/UserProfile";
 
 function App() {
   return (
@@ -29,15 +29,16 @@ function App() {
       <Route path="/Dadduser" element={<AddUserD />} />
       <Route path="/userHome" element={<UserHome />} />
       <Route path="/users/:id" element={<UpdateUser />} />
-      <Route path="/reg" element={<Regs />} />
       <Route path="/loginH" element={<Login />} />
       <Route path="/improfile/:id" element={<IMProfile />} />
       <Route path="/pmprofile/:id" element={<PMProfile />} />
       <Route path="/supplierHome" element={<SupplierHome />} />
       <Route path="/updatesupplier/:id" element={<UpdateSupplier />} />
       <Route path="/addsupplier" element={<AddSupplier />} />
+      <Route path="/userprofie/:id" element={<UserProfile />} />
     </Routes>
   );
 }
 
 export default App;
+

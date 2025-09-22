@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+
 const usersController = require('../controllers/newController');
 
 router.get('/', usersController.getAllUsers);
@@ -8,5 +9,7 @@ router.get('/:id', usersController.getById);
 router.put('/:id', usersController.updateUser);
 router.delete('/:id', usersController.deleteUser);
 
-//router
+// ✅ Login route
+router.post('/login', usersController.loginUser);
+
 module.exports = router;

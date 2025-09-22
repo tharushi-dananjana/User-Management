@@ -1,19 +1,22 @@
 // pages/Login/Login.js
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AddUser from "../User/AddUser"; // ✅ Import popup
 import "./Login.css";
 
 export default function Login() {
   const [userGmail, setUserGmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [showRegisterPopup, setShowRegisterPopup] = useState(false); // ✅ popup state
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ Admin login (hardcoded)
+    // ✅ Admin login
     if (userGmail === "admin@gmail.com" && userPassword === "admin123") {
       alert("Admin Login Successful!");
       navigate("/adminHome");
@@ -35,35 +38,40 @@ export default function Login() {
         navigate(`/doctorprofile/${doctor._id}`);
         return;
       }
-    } catch (err) {
-      // Ignore error and try next login
-    }
+    } catch {}
 
     // ✅ Inventory Manager login
     try {
-      const res = await axios.post("http://localhost:5000/inventory-managers/login", {
-        managerEmail: userGmail,
-        managerPassword: userPassword,
-      });
+      const res = await axios.post(
+        "http://localhost:5000/inventory-managers/login",
+        {
+          managerEmail: userGmail,
+          managerPassword: userPassword,
+        }
+      );
 
       if (res.status === 200) {
         const manager = res.data.manager;
         localStorage.setItem("managerId", manager._id);
-        localStorage.setItem("managerName", `${manager.firstName} ${manager.lastName}`);
+        localStorage.setItem(
+          "managerName",
+          `${manager.firstName} ${manager.lastName}`
+        );
         alert(`Welcome ${manager.firstName} ${manager.lastName}`);
         navigate(`/improfile/${manager._id}`);
         return;
       }
-    } catch (err) {
-      // Ignore error and try next login
-    }
+    } catch {}
 
     // ✅ Project Manager login
     try {
-      const pmRes = await axios.post("http://localhost:5000/project-managers/login", {
-        managerEmail: userGmail,
-        managerPassword: userPassword,
-      });
+      const pmRes = await axios.post(
+        "http://localhost:5000/project-managers/login",
+        {
+          managerEmail: userGmail,
+          managerPassword: userPassword,
+        }
+      );
 
       if (pmRes.status === 200) {
         const pm = pmRes.data.manager;
@@ -75,7 +83,9 @@ export default function Login() {
       }
     } catch (err) {
       console.error("PM Login error:", err);
-      setErrorMessage(err.response?.data?.message || "Email or password is incorrect.");
+      setErrorMessage(
+        err.response?.data?.message || "Email or password is incorrect."
+      );
     }
   };
 
@@ -138,13 +148,28 @@ export default function Login() {
                 <br />
                 {errorMessage && <p className="error">{errorMessage}</p>}
                 <p>
-                  Don&apos;t have an account? <Link to="/reg">Register</Link> now
+                  Don&apos;t have an account?{" "}
+                  <button
+                    className="link-button"
+                    onClick={() => setShowRegisterPopup(true)}
+                  >
+                    Register
+                  </button>{" "}
+                  now
                 </p>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* ✅ Show AddUser Popup */}
+      {showRegisterPopup && (
+        <AddUser
+          onClose={() => setShowRegisterPopup(false)}
+          onUserAdded={() => console.log("User registered")}
+        />
+      )}
     </div>
   );
 }
