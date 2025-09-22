@@ -1,0 +1,161 @@
+/* SupplierHome.css */
+
+/* Page heading */
+.mh2 {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 28px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Success popup */
+.success-popup {
+  width: 300px;
+  margin: 10px auto;
+  padding: 12px;
+  background-color: #4BB543;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Search Box */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.search-input {
+  width: 300px;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.search-input:focus {
+  border-color: #0088FE;
+  box-shadow: 0 0 5px rgba(0, 136, 254, 0.5);
+}
+
+/* Table styling */
+#users {
+  width: 90%;
+  margin: 0 auto 30px auto;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+#users th, #users td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+#users th {
+  background-color: #0088FE;
+  color: white;
+  font-weight: bold;
+}
+
+#users tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#users tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Float add button */
+.float {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background-color: #0088FE;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  transition: 0.3s;
+}
+
+.float:hover {
+  background-color: #005bb5;
+}
+
+.label-container {
+  position: fixed;
+  bottom: 110px;
+  right: 40px;
+  background: transparent;
+}
+
+.label-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #0088FE;
+  text-align: center;
+}
+
+/* Popup modals */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.popup-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.popup-content h2 {
+  margin-top: 0;
+  color: #0088FE;
+}
+
+.popup-content input, .popup-content select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0 20px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.popup-content button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0088FE;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.popup-content button:hover {
+  background-color: #005bb5;
+}

@@ -52,6 +52,12 @@ const Sidebar = ({ onProfileClick }) => {
             User Management
           </Link>
         </li>
+        <li>
+          <Link to="/supplierHome">
+            <BiUser className="icon" />
+            Supplier Management
+          </Link>
+        </li>
 
         {/* ✅ Logout with onClick */}
         <li className="logout">

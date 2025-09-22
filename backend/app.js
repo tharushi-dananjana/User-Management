@@ -9,6 +9,7 @@ const doctorRoutes = require('./routes/doctorRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const inventoryManagerRoutes = require('./routes/imRoutes');
 const pmRoutes = require('./routes/pmRoutes');
+const supplierRoutes = require('./routes/supplierRoutes');
 
 const app = express();
 const port = 5000;
@@ -31,6 +32,7 @@ app.use('/doctors', doctorRoutes);//added doctor routes
 app.use('/admins', adminRoutes);
 app.use('/inventory-managers', inventoryManagerRoutes);
 app.use('/project-managers', pmRoutes);
+app.use('/suppliers', supplierRoutes);
 
 // Start the server
 app.listen(port, () => {
