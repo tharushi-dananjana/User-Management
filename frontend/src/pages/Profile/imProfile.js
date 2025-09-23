@@ -1,8 +1,6 @@
-// pages/Profile/imProfile.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import IMNav from "../../components/Nav/IMNav/IMNav.js"; // ✅ use IMNav instead of Sidebar
-import "./IMProfile.css"; // Create a separate CSS file for styling
+import IMNav from "../../components/Nav/IMNav/IMNav.js";
 
 const IMProfile = () => {
   const [manager, setManager] = useState(null);
@@ -18,7 +16,7 @@ const IMProfile = () => {
     category: "",
   });
 
-  const managerId = localStorage.getItem("managerId"); // Logged-in inventory manager ID
+  const managerId = localStorage.getItem("managerId");
 
   useEffect(() => {
     const fetchManager = async () => {
@@ -79,115 +77,141 @@ const IMProfile = () => {
     }
   };
 
-  if (loading) return <p>Loading inventory manager profile...</p>;
-  if (!manager) return <p>No manager found.</p>;
+  if (loading) return <p className="text-center mt-10 text-gray-500">Loading inventory manager profile...</p>;
+  if (!manager) return <p className="text-center mt-10 text-red-500">No manager found.</p>;
 
   return (
-    <div className="im-page-container">
+    <div className="min-h-screen flex bg-gray-100">
+      {/* Sidebar / Navigation */}
       <IMNav />
-      <div className="im-profile-content">
-        <h1>Inventory Manager Profile</h1>
+
+      {/* Profile Content */}
+      <div className="flex-1 p-6 md:p-12" style={{ marginLeft: "245px", maxWidth: '600px' }}>
+        <h1 className="text-2xl font-bold text-gray-700 mb-6">Inventory Manager Profile</h1>
 
         {!editing ? (
-          <div className="profile-view">
-            <p>
-              <strong>First Name:</strong> {manager.firstName}
-            </p>
-            <p>
-              <strong>Last Name:</strong> {manager.lastName}
-            </p>
-            <p>
-              <strong>Phone:</strong> {manager.managerPhone}
-            </p>
-            <p>
-              <strong>Email:</strong> {manager.managerEmail}
-            </p>
-            <p>
-              <strong>Password:</strong> {manager.managerPassword}
-            </p>
-            <p>
-              <strong>NIC:</strong> {manager.nic}
-            </p>
-            <p>
-              <strong>Category:</strong> {manager.category}
-            </p>
+          <div className="bg-white shadow rounded-lg p-6 space-y-3" style={{ marginRight: '0px' }}>
+            <p><strong>First Name:</strong> {manager.firstName}</p>
+            <p><strong>Last Name:</strong> {manager.lastName}</p>
+            <p><strong>Phone:</strong> {manager.managerPhone}</p>
+            <p><strong>Email:</strong> {manager.managerEmail}</p>
+            <p><strong>Password:</strong> {manager.managerPassword}</p>
+            <p><strong>NIC:</strong> {manager.nic}</p>
+            <p><strong>Category:</strong> {manager.category}</p>
 
-            <button onClick={() => setEditing(true)}>Edit Profile</button>
+            <button
+              className="mt-4 px-4 py-2 bg-yellow-500 text-white rounded shadow hover:bg-yellow-600 transition"
+              onClick={() => setEditing(true)}
+            >
+              Edit Profile
+            </button>
           </div>
         ) : (
-          <form onSubmit={handleUpdate} className="profile-edit-form">
-            <label>First Name:</label>
-            <input
-              type="text"
-              name="firstName"
-              value={form.firstName}
-              onChange={handleChange}
-              required
-            />
+          <form onSubmit={handleUpdate} className="bg-white shadow rounded-lg p-6 space-y-4">
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">First Name:</label>
+              <input
+                type="text"
+                name="firstName"
+                value={form.firstName}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
 
-            <label>Last Name:</label>
-            <input
-              type="text"
-              name="lastName"
-              value={form.lastName}
-              onChange={handleChange}
-              required
-            />
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">Last Name:</label>
+              <input
+                type="text"
+                name="lastName"
+                value={form.lastName}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
 
-            <label>Phone:</label>
-            <input
-              type="text"
-              name="managerPhone"
-              value={form.managerPhone}
-              onChange={handleChange}
-              required
-            />
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">Phone:</label>
+              <input
+                type="text"
+                name="managerPhone"
+                value={form.managerPhone}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
 
-            <label>Email:</label>
-            <input
-              type="email"
-              name="managerEmail"
-              value={form.managerEmail}
-              onChange={handleChange}
-              required
-            />
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">Email:</label>
+              <input
+                type="email"
+                name="managerEmail"
+                value={form.managerEmail}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
 
-            <label>Password:</label>
-            <input
-              type="text"
-              name="managerPassword"
-              value={form.managerPassword}
-              onChange={handleChange}
-              required
-            />
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">Password:</label>
+              <input
+                type="text"
+                name="managerPassword"
+                value={form.managerPassword}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
 
-            <label>NIC:</label>
-            <input
-              type="text"
-              name="nic"
-              value={form.nic}
-              onChange={handleChange}
-              required
-            />
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">NIC:</label>
+              <input
+                type="text"
+                name="nic"
+                value={form.nic}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
 
-            <label>Category:</label>
-            <select
-              name="category"
-              value={form.category}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Category</option>
-              <option value="Pharmacy">Pharmacy</option>
-              <option value="Surgery">Surgery</option>
-              <option value="General Supplies">General Supplies</option>
-              <option value="Equipment">Equipment</option>
-            </select>
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">Category:</label>
+              <select
+                name="category"
+                value={form.category}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value="">Select Category</option>
+                <option value="Pharmacy">Pharmacy</option>
+                <option value="Surgery">Surgery</option>
+                <option value="General Supplies">General Supplies</option>
+                <option value="Equipment">Equipment</option>
+              </select>
+            </div>
 
-            <button type="submit">Save Changes</button>
-            <button type="button" onClick={() => setEditing(false)}>
-              Cancel
-            </button>
+            <div className="flex space-x-4 mt-4">
+              <button
+                type="submit"
+                className="px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700 transition"
+              >
+                Save Changes
+              </button>
+              <button
+                type="button"
+                onClick={() => setEditing(false)}
+                className="px-4 py-2 bg-gray-400 text-white rounded shadow hover:bg-gray-500 transition"
+              >
+                Cancel
+              </button>
+            </div>
           </form>
         )}
       </div>
