@@ -21,6 +21,7 @@ const DoctorHome = () => {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [modeFilter, setModeFilter] = useState(''); // ✅ new filter state
 
   const getDoctors = () => {
     fetchHandler().then(data => setDoctors(data.doctors));
@@ -44,11 +45,15 @@ const DoctorHome = () => {
     }
   };
 
-  const filteredDoctors = doctors.filter(doctor =>
-    (doctor.doctorName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-    (doctor.doctorEmail?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-    (doctor.specialization?.toLowerCase() || '').includes(searchTerm.toLowerCase())
-  );
+  // ✅ Apply search + mode filter
+  const filteredDoctors = doctors.filter(doctor => {
+    const matchesSearch =
+      (doctor.doctorName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (doctor.doctorEmail?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (doctor.specialization?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+    const matchesMode = modeFilter ? doctor.mode === modeFilter : true;
+    return matchesSearch && matchesMode;
+  });
 
   const availabilityData = [
     { name: "Available", value: doctors.filter(doc => doc.available === true).length },
@@ -67,7 +72,7 @@ const DoctorHome = () => {
     <div className="min-h-screen bg-gray-100">
       <Nav />
 
-      <div className="px-6 py-6 md:ml-64" >
+      <div className="px-6 py-6 md:ml-64">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">Doctors Registration Details</h1>
 
         {successMessage && (
@@ -76,8 +81,8 @@ const DoctorHome = () => {
           </div>
         )}
 
-        {/* Search Box */}
-        <div className="mb-4">
+        {/* Search + Mode Filter */}
+        <div className="flex flex-col md:flex-row gap-4 mb-4">
           <input
             type="text"
             placeholder="Search by name, email, or specialization..."
@@ -85,6 +90,17 @@ const DoctorHome = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full md:w-1/2 border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+
+          {/* Mode Filter */}
+          <select
+            value={modeFilter}
+            onChange={(e) => setModeFilter(e.target.value)}
+            className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">All Modes</option>
+            <option value="Physical">Physical</option>
+            <option value="Digital">Digital</option>
+          </select>
         </div>
 
         {/* Doctors Table */}
@@ -96,8 +112,9 @@ const DoctorHome = () => {
                 <th className="py-2 px-4 text-left">Phone</th>
                 <th className="py-2 px-4 text-left">Email</th>
                 <th className="py-2 px-4 text-left">Specialization</th>
-                <th className="py-2 px-4 text-left">Experience (Years)</th>
+                <th className="py-2 px-4 text-left">Experience</th>
                 <th className="py-2 px-4 text-left">Available</th>
+                <th className="py-2 px-4 text-left">Mode</th> {/* ✅ New column */}
                 <th className="py-2 px-4 text-left">Action</th>
               </tr>
             </thead>
@@ -116,7 +133,7 @@ const DoctorHome = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="7" className="text-center py-4 text-gray-500">
+                  <td colSpan="8" className="text-center py-4 text-gray-500">
                     No doctors found
                   </td>
                 </tr>
