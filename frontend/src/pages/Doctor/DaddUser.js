@@ -13,8 +13,58 @@ const DaddUser = ({ onClose, onDoctorAdded }) => {
     mode: "Physical",
   });
 
+  const [errors, setErrors] = useState({});
+
+  const validateField = (name, value) => {
+    let error = "";
+
+    switch (name) {
+      case "doctorName":
+        if (!value.trim()) error = "Name is required.";
+        else if (!/^[A-Za-z\s]{3,}$/.test(value))
+          error = "Name must be at least 3 letters and contain only alphabets.";
+        break;
+
+      case "doctorPhone":
+        if (!value.trim()) error = "Phone is required.";
+        else if (!/^[0-9]{10}$/.test(value))
+          error = "Phone must be exactly 10 digits.";
+        break;
+
+      case "doctorEmail":
+        if (!value.trim()) error = "Email is required.";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+          error = "Enter a valid email address.";
+        break;
+
+      case "doctorPassword":
+        if (!value.trim()) error = "Password is required.";
+        else if (value.length < 6)
+          error = "Password must be at least 6 characters long.";
+        break;
+
+      case "specialization":
+        if (!value) error = "Please select a specialization.";
+        break;
+
+      case "experienceYears":
+        if (value === "") error = "Experience is required.";
+        else if (Number(value) < 0)
+          error = "Experience cannot be a negative number.";
+        break;
+
+      default:
+        break;
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: error }));
+    return error === "";
+  };
+
   const handleChange = (e) => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setInputs((prev) => ({ ...prev, [name]: value }));
+    validateField(name, value);
   };
 
   const handleCheckbox = () => {
@@ -23,6 +73,17 @@ const DaddUser = ({ onClose, onDoctorAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate all fields before submit
+    let allValid = true;
+    Object.keys(inputs).forEach((key) => {
+      if (key !== "available" && key !== "mode") {
+        const isValid = validateField(key, inputs[key]);
+        if (!isValid) allValid = false;
+      }
+    });
+
+    if (!allValid) return; // Stop if any field is invalid
 
     try {
       await axios.post("http://localhost:5000/doctors", inputs);
@@ -39,6 +100,7 @@ const DaddUser = ({ onClose, onDoctorAdded }) => {
         mode: "Physical",
       });
 
+      setErrors({});
       onDoctorAdded();
       onClose();
     } catch (err) {
@@ -58,7 +120,7 @@ const DaddUser = ({ onClose, onDoctorAdded }) => {
           Add Doctor
         </h3>
         <form onSubmit={handleSubmit} className="space-y-3">
-          {/* Grid for Name + Phone */}
+          {/* Name + Phone */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -69,10 +131,15 @@ const DaddUser = ({ onClose, onDoctorAdded }) => {
                 name="doctorName"
                 value={inputs.doctorName}
                 onChange={handleChange}
-                required
-                className="w-full border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                className={`w-full border ${
+                  errors.doctorName ? "border-red-500" : "border-gray-300"
+                } rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm`}
               />
+              {errors.doctorName && (
+                <p className="text-red-500 text-xs mt-1">{errors.doctorName}</p>
+              )}
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Phone:
@@ -82,13 +149,17 @@ const DaddUser = ({ onClose, onDoctorAdded }) => {
                 name="doctorPhone"
                 value={inputs.doctorPhone}
                 onChange={handleChange}
-                required
-                className="w-full border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                className={`w-full border ${
+                  errors.doctorPhone ? "border-red-500" : "border-gray-300"
+                } rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm`}
               />
+              {errors.doctorPhone && (
+                <p className="text-red-500 text-xs mt-1">{errors.doctorPhone}</p>
+              )}
             </div>
           </div>
 
-          {/* Grid for Email + Password */}
+          {/* Email + Password */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -99,10 +170,15 @@ const DaddUser = ({ onClose, onDoctorAdded }) => {
                 name="doctorEmail"
                 value={inputs.doctorEmail}
                 onChange={handleChange}
-                required
-                className="w-full border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                className={`w-full border ${
+                  errors.doctorEmail ? "border-red-500" : "border-gray-300"
+                } rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm`}
               />
+              {errors.doctorEmail && (
+                <p className="text-red-500 text-xs mt-1">{errors.doctorEmail}</p>
+              )}
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Password:
@@ -112,9 +188,15 @@ const DaddUser = ({ onClose, onDoctorAdded }) => {
                 name="doctorPassword"
                 value={inputs.doctorPassword}
                 onChange={handleChange}
-                required
-                className="w-full border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                className={`w-full border ${
+                  errors.doctorPassword ? "border-red-500" : "border-gray-300"
+                } rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm`}
               />
+              {errors.doctorPassword && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.doctorPassword}
+                </p>
+              )}
             </div>
           </div>
 
@@ -128,8 +210,9 @@ const DaddUser = ({ onClose, onDoctorAdded }) => {
                 name="specialization"
                 value={inputs.specialization}
                 onChange={handleChange}
-                required
-                className="w-full border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                className={`w-full border ${
+                  errors.specialization ? "border-red-500" : "border-gray-300"
+                } rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm`}
               >
                 <option value="">Select Specialization</option>
                 <option value="VOG">VOG</option>
@@ -140,7 +223,13 @@ const DaddUser = ({ onClose, onDoctorAdded }) => {
                 <option value="Dermatologist">Dermatologist</option>
                 <option value="Ayurvedic Specialist">Ayurvedic Specialist</option>
               </select>
+              {errors.specialization && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.specialization}
+                </p>
+              )}
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Experience (Years):
@@ -150,10 +239,16 @@ const DaddUser = ({ onClose, onDoctorAdded }) => {
                 name="experienceYears"
                 value={inputs.experienceYears}
                 onChange={handleChange}
-                required
                 min="0"
-                className="w-full border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                className={`w-full border ${
+                  errors.experienceYears ? "border-red-500" : "border-gray-300"
+                } rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm`}
               />
+              {errors.experienceYears && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.experienceYears}
+                </p>
+              )}
             </div>
           </div>
 

@@ -7,13 +7,40 @@ export default function Login() {
   const [userGmail, setUserGmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [errors, setErrors] = useState({});
   const [showRegisterPopup, setShowRegisterPopup] = useState(false);
 
   const navigate = useNavigate();
 
+  // Validation function
+  const validateField = (name, value) => {
+    let error = "";
+
+    if (name === "userGmail") {
+      if (!value.trim()) error = "Email is required.";
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+        error = "Enter a valid email address.";
+    }
+
+    if (name === "userPassword") {
+      if (!value.trim()) error = "Password is required.";
+      else if (value.length < 6)
+        error = "Password must be at least 6 characters long.";
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: error }));
+    return error === "";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
+
+    // Validate all fields before submit
+    const isEmailValid = validateField("userGmail", userGmail);
+    const isPasswordValid = validateField("userPassword", userPassword);
+
+    if (!isEmailValid || !isPasswordValid) return;
 
     // Admin login
     if (userGmail === "admin@gmail.com" && userPassword === "admin123") {
@@ -40,10 +67,10 @@ export default function Login() {
 
     // Supplier login
     try {
-      const supplierRes = await axios.post("http://localhost:5000/suppliers/login", {
-        supplierEmail: userGmail,
-        supplierPassword: userPassword,
-      });
+      const supplierRes = await axios.post(
+        "http://localhost:5000/suppliers/login",
+        { supplierEmail: userGmail, supplierPassword: userPassword }
+      );
       if (supplierRes.status === 200) {
         const supplier = supplierRes.data.supplier;
         localStorage.setItem("supplierId", supplier._id);
@@ -88,10 +115,10 @@ export default function Login() {
 
     // Project Manager login
     try {
-      const pmRes = await axios.post("http://localhost:5000/project-managers/login", {
-        managerEmail: userGmail,
-        managerPassword: userPassword,
-      });
+      const pmRes = await axios.post(
+        "http://localhost:5000/project-managers/login",
+        { managerEmail: userGmail, managerPassword: userPassword }
+      );
       if (pmRes.status === 200) {
         const pm = pmRes.data.manager;
         localStorage.setItem("pmId", pm._id);
@@ -102,7 +129,9 @@ export default function Login() {
       }
     } catch (err) {
       console.error("PM Login error:", err);
-      setErrorMessage(err.response?.data?.message || "Email or password is incorrect.");
+      setErrorMessage(
+        err.response?.data?.message || "Email or password is incorrect."
+      );
     }
   };
 
@@ -119,31 +148,61 @@ export default function Login() {
       <div className="flex flex-1 items-center justify-center p-6 bg-gray-100">
         <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
           <h2 className="text-3xl font-bold text-gray-800 mb-2">Login</h2>
-          <p className="text-gray-600 mb-6">Please log in with your credentials.</p>
+          <p className="text-gray-600 mb-6">
+            Please log in with your credentials.
+          </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Email Field */}
             <div>
-              <label htmlFor="userGmail" className="block text-gray-700 font-medium mb-1">Email:</label>
+              <label
+                htmlFor="userGmail"
+                className="block text-gray-700 font-medium mb-1"
+              >
+                Email:
+              </label>
               <input
                 type="email"
                 id="userGmail"
                 value={userGmail}
-                onChange={(e) => setUserGmail(e.target.value)}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+                onChange={(e) => {
+                  setUserGmail(e.target.value);
+                  validateField("userGmail", e.target.value);
+                }}
+                className={`w-full px-3 py-2 border ${
+                  errors.userGmail ? "border-red-500" : "border-gray-300"
+                } rounded focus:outline-none focus:ring-2 focus:ring-green-500`}
               />
+              {errors.userGmail && (
+                <p className="text-red-600 text-xs mt-1">{errors.userGmail}</p>
+              )}
             </div>
 
+            {/* Password Field */}
             <div>
-              <label htmlFor="userPassword" className="block text-gray-700 font-medium mb-1">Password:</label>
+              <label
+                htmlFor="userPassword"
+                className="block text-gray-700 font-medium mb-1"
+              >
+                Password:
+              </label>
               <input
                 type="password"
                 id="userPassword"
                 value={userPassword}
-                onChange={(e) => setUserPassword(e.target.value)}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+                onChange={(e) => {
+                  setUserPassword(e.target.value);
+                  validateField("userPassword", e.target.value);
+                }}
+                className={`w-full px-3 py-2 border ${
+                  errors.userPassword ? "border-red-500" : "border-gray-300"
+                } rounded focus:outline-none focus:ring-2 focus:ring-green-500`}
               />
+              {errors.userPassword && (
+                <p className="text-red-600 text-xs mt-1">
+                  {errors.userPassword}
+                </p>
+              )}
             </div>
 
             {errorMessage && (

@@ -57,12 +57,10 @@ const AdminProfile = () => {
   };
 
   if (loading)
-    return (
-      <p className="text-gray-500 text-center text-lg mt-10">Loading...</p>
-    );
+    return <p className="text-gray-500 text-center text-lg mt-10">Loading...</p>;
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg mx-auto">
+    <div className="max-w-md mx-auto p-6">
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
         Admin Profile
       </h2>
@@ -97,10 +95,7 @@ const AdminProfile = () => {
           </button>
         </div>
       ) : (
-        <form
-          onSubmit={handleUpdate}
-          className="space-y-4 flex flex-col"
-        >
+        <form onSubmit={handleUpdate} className="space-y-4 flex flex-col">
           <div>
             <label className="block font-medium text-gray-700 mb-1">
               First Name:

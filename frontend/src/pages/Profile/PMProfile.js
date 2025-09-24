@@ -14,7 +14,6 @@ const PMProfile = () => {
     managerEmail: "",
     managerPassword: "",
     nic: "",
-    category: "",
   });
 
   const managerId = localStorage.getItem("pmId");
@@ -41,7 +40,6 @@ const PMProfile = () => {
           managerEmail: data.managerEmail,
           managerPassword: data.managerPassword,
           nic: data.nic,
-          category: data.category || "",
         });
       } catch (err) {
         console.error("Error fetching manager profile:", err);
@@ -169,18 +167,7 @@ const PMProfile = () => {
                 className="w-full border px-4 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
               />
-              <select
-                name="category"
-                value={form.category}
-                onChange={handleChange}
-                className="w-full border px-4 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-500"
-              >
-                <option value="">Select Category</option>
-                <option value="Construction">Construction</option>
-                <option value="IT">IT</option>
-                <option value="HR">HR</option>
-                <option value="Finance">Finance</option>
-              </select>
+              
 
               <div className="flex gap-4 mt-4">
                 <button
