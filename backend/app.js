@@ -1,5 +1,5 @@
 // password = UR6FwT8ggNBM4pti
-
+//"mongodb+srv://it23688568:UR6FwT8ggNBM4pti@cluster0.ijo2aeo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cors());
 
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://it23688568:UR6FwT8ggNBM4pti@cluster0.ijo2aeo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
+mongoose.connect("mongodb+srv://customer:FPBt4wOtSiD6wutd@cluster0.amywqi8.mongodb.net/ayumanthra?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })

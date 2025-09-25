@@ -295,7 +295,7 @@ const AdminHome = () => {
         <XAxis dataKey="name" tick={{ fontSize: 12 }} />
         <YAxis allowDecimals={false} />
         <Tooltip />
-        <Bar dataKey="count" fill="#f97316" barSize={40} /> {/* Reduced bar width */}
+        <Bar dataKey="count" fill="#f97316" barSize={40} />
       </BarChart>
     </ResponsiveContainer>
   </div>
